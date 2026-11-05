@@ -1,0 +1,6 @@
+yt-dlp>=2026.10.26
+imageio-ffmpeg>=0.8.0
+requests>=2.32
+google-api-python-client>=2.180
+google-auth-oauthlib>=1.2
+faster-whisper>=1.2,<2

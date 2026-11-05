@@ -1,0 +1,215 @@
+LICENÇA DE CÓDIGO-FONTE DISPONÍVEL DO CUTSHORTPLUS
+Versão 1.0 — 4 de novembro de 2026
+
+Copyright (c) 2026 Erick I Gaudêncio B.
+Todos os direitos reservados.
+
+AVISO IMPORTANTE
+Esta é uma licença personalizada de código-fonte disponível ("source-available"),
+NÃO uma licença de software livre ou de código aberto aprovada pela OSI.
+O acesso público ao repositório não transfere a titularidade do Software e
+não concede direitos além dos previstos expressamente neste documento.
+
+1. TITULAR E OBJETO
+
+1.1. "Licenciante" significa Erick I Gaudêncio B., titular declarado dos
+direitos autorais sobre as partes originais do projeto CutShortPlus.
+
+1.2. "Software" significa o código-fonte, os arquivos executáveis derivados
+desse código, a interface e a documentação original do CutShortPlus
+disponibilizados pelo Licenciante sob esta licença.
+
+1.3. "Versão Original" significa uma versão publicada pelo Licenciante,
+sem modificações no código, interface, funcionalidades, arquivos de
+distribuição, avisos de autoria e licença.
+
+1.4. "Modificação Privada" significa uma alteração feita para utilização
+restrita ao próprio usuário ou à organização licenciada, sem publicação,
+disponibilização, transferência ou distribuição a terceiros. Colaboradores
+e prestadores que atuem sob a direção da organização, com obrigação de
+confidencialidade e sem direito de redistribuição, podem ter acesso interno.
+
+1.5. "Distribuição" inclui compartilhar, entregar, republicar, espelhar,
+disponibilizar para download ou fornecer a terceiros cópias do Software,
+gratuitamente ou mediante remuneração, inclusive por repositórios, pacotes,
+aplicativos instaláveis e serviços de hospedagem de código.
+
+2. CONCESSÃO LIMITADA DE DIREITOS
+
+Sujeito ao cumprimento integral desta licença, o Licenciante concede a
+pessoas físicas e jurídicas uma permissão mundial, gratuita, não exclusiva,
+intransferível e não sublicenciável para:
+
+a) acessar, ler e estudar o código-fonte do Software;
+
+b) baixar, instalar, executar e usar o Software, inclusive internamente em
+empresas e outras organizações;
+
+c) realizar Modificações Privadas e manter cópias de trabalho e segurança
+exclusivamente para o uso interno autorizado; e
+
+d) redistribuir gratuitamente cópias completas e inalteradas da Versão
+Original, desde que todos os requisitos da seção 3 sejam observados.
+
+O uso interno por uma empresa com fins lucrativos é permitido. Essa permissão
+não autoriza a venda, o licenciamento comercial ou o fornecimento do próprio
+Software ou de suas funcionalidades como produto ou serviço a terceiros.
+
+3. REDISTRIBUIÇÃO DA VERSÃO ORIGINAL
+
+A redistribuição somente é autorizada quando, cumulativamente:
+
+a) a cópia corresponde integralmente à Versão Original, sem alterações de
+código, interface, recursos, créditos, marcações ou arquivos de distribuição;
+
+b) ocorre sem cobrança de preço, assinatura, licença, comissão ou outra
+contraprestação pelo fornecimento ou acesso ao Software;
+
+c) mantém este texto de licença completo e os avisos de direitos autorais,
+créditos e atribuições presentes na distribuição original;
+
+d) não afirma nem sugere endosso, associação oficial ou autorização
+comercial adicional concedida pelo Licenciante; e
+
+e) não contraria direitos ou licenças de componentes de terceiros.
+
+A mera utilização de recursos de visualização ou fork do GitHub não autoriza
+a divulgação de uma versão modificada fora dos limites desta licença.
+
+4. MODIFICAÇÕES E SUA DIVULGAÇÃO
+
+4.1. É permitido modificar o Software apenas para Modificação Privada,
+conforme a seção 1.4.
+
+4.2. É proibido publicar, vender, compartilhar, disponibilizar ou
+redistribuir versões modificadas do Software, inclusive código alterado,
+executáveis derivados ou alterações em repositórios públicos, sem autorização
+prévia, expressa e escrita do Licenciante.
+
+4.3. Se o Licenciante autorizar expressamente a distribuição de uma versão
+modificada, a autorização deverá indicar o alcance da exceção. Salvo
+disposição escrita mais específica, a distribuição autorizada deverá
+disponibilizar o código-fonte correspondente às modificações, preservar os
+avisos e créditos e permanecer sujeita a esta mesma licença, sem remover
+suas restrições de comercialização e marcas.
+
+4.4. A obrigação da seção 4.3 NÃO concede, por si só, permissão para
+distribuir modificações. A regra geral continua sendo a proibição da
+seção 4.2.
+
+5. RESTRIÇÕES DE COMERCIALIZAÇÃO
+
+Sem autorização prévia, expressa e escrita do Licenciante, é proibido:
+
+a) vender, revender, alugar, sublicenciar ou cobrar pelo Software;
+
+b) distribuir versões do Software mediante pagamento, assinatura, doação
+condicionada, publicidade obrigatória ou outra forma de cobrança vinculada
+ao acesso;
+
+c) oferecer o Software, versões modificadas ou suas funcionalidades como
+serviço hospedado, plataforma, API, serviço sob demanda ou produto de
+software comercial para terceiros;
+
+d) incorporar o Software a um produto ou pacote comercial destinado à
+redistribuição como componente licenciado; e
+
+e) explorar comercialmente o código-fonte ou versões derivadas do Software
+por outras modalidades não expressamente permitidas nesta licença.
+
+Esta proibição recai sobre a comercialização do PRÓPRIO SOFTWARE. Ela não
+proíbe, por si só, que o usuário utilize internamente o aplicativo para
+criar, editar, publicar ou monetizar vídeos e outros conteúdos produzidos
+legitimamente, desde que tenha os direitos e as autorizações necessários
+sobre esses conteúdos e respeite os termos dos serviços envolvidos.
+Oferecer acesso ao CutShortPlus como ferramenta a terceiros continua
+proibido sem autorização escrita.
+
+6. AUTORIA, CRÉDITOS E DIREITOS RESERVADOS
+
+6.1. Os avisos de copyright, esta licença e as atribuições de autoria
+devem ser preservados em todas as cópias autorizadas.
+
+6.2. A presente licença não transfere direitos autorais, propriedade
+intelectual ou titularidade do Software ao usuário.
+
+6.3. Direitos não expressamente concedidos permanecem reservados ao
+Licenciante, ressalvados os direitos de terceiros e as permissões
+irrenunciáveis estabelecidas pela legislação aplicável.
+
+7. NOME, MARCA E IDENTIDADE VISUAL
+
+7.1. O nome "CutShortPlus", logotipos, ícones distintivos e identidade
+visual associados ao projeto permanecem reservados aos respectivos titulares.
+
+7.2. O uso independente desses sinais para divulgar, identificar ou
+promover novos produtos, serviços, versões alteradas, contas, empresas
+ou projetos requer autorização prévia, expressa e escrita do titular.
+
+7.3. A preservação dos sinais já incorporados à redistribuição
+integralmente inalterada da Versão Original é permitida apenas na medida
+necessária para identificar fielmente essa versão. Isso não constitui
+licença de marca para outros usos, publicidade, patrocínio ou endosso.
+
+8. COMPONENTES E SERVIÇOS DE TERCEIROS
+
+Esta licença cobre exclusivamente as partes do Software sobre as quais o
+Licenciante detenha direitos suficientes para licenciá-las. Dependências,
+bibliotecas, marcas, APIs, mídias, modelos de IA, serviços externos e
+demais componentes de terceiros continuam sujeitos às respectivas
+licenças, direitos e termos. Esta licença não substitui nem reduz
+direitos concedidos validamente por licenças desses componentes.
+
+9. CONTEÚDOS PRODUZIDOS
+
+A presente licença não reivindica automaticamente a titularidade de
+vídeos, imagens, áudios, textos ou outros conteúdos produzidos por
+usuários com o Software. Os direitos sobre esses materiais dependem
+da autoria, das fontes utilizadas, de contratos e da legislação aplicável.
+O usuário é responsável por respeitar direitos autorais, direitos de
+imagem, privacidade e termos das plataformas em que utilizar o Software.
+
+10. AUSÊNCIA DE GARANTIAS E LIMITAÇÃO DE RESPONSABILIDADE
+
+O Software é fornecido "NO ESTADO EM QUE SE ENCONTRA" e "CONFORME
+DISPONÍVEL", sem garantia contratual de funcionamento ininterrupto,
+adequação a finalidade específica, compatibilidade ou ausência de
+erros. Na máxima extensão permitida pela legislação aplicável, o
+Licenciante não responderá por danos indiretos, lucros cessantes,
+perda de dados ou indisponibilidade decorrentes do uso do Software.
+Nada nesta seção exclui direitos ou responsabilidades que a lei
+proíba afastar ou limitar.
+
+11. DESCUMPRIMENTO E ENCERRAMENTO DA PERMISSÃO
+
+O descumprimento material desta licença encerra as permissões aqui
+concedidas ao infrator, sem prejuízo das medidas previstas em lei.
+O usuário deverá cessar os atos não autorizados e a distribuição
+indevida, preservando evidências e obrigações legais pertinentes.
+A eventual regularização ou concessão de nova permissão dependerá
+de acordo escrito ou de disposição legal aplicável.
+
+O encerramento da permissão de um infrator não retira automaticamente
+os direitos que outros destinatários tenham recebido de forma válida,
+desde que continuem cumprindo esta licença.
+
+12. AUTORIZAÇÕES ADICIONAIS E VERSÕES DA LICENÇA
+
+Permissões comerciais, publicação de versões modificadas, utilização
+independente da marca ou outras exceções somente poderão ser
+concedidas pelo titular por autorização prévia, expressa e escrita,
+com definição de escopo e condições.
+
+O Licenciante poderá publicar novas versões desta licença para
+lançamentos futuros. A mera publicação de uma nova versão não
+altera retroativamente os termos das cópias já disponibilizadas
+validamente sob esta versão, salvo acordo ou exigência legal.
+
+13. LEGISLAÇÃO APLICÁVEL
+
+Esta licença será interpretada conforme a legislação aplicável,
+inclusive as normas brasileiras de direitos autorais quando
+pertinentes, sem afastar regras imperativas de proteção a usuários,
+consumidores ou outras partes legalmente protegidas.
+
+FIM DA LICENÇA

@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CutShortPlus • Estúdio de cortes</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
+:root{--ink:#162439;--muted:#8290a2;--line:#e4eaf1;--blue:#5067ef;--soft:#f6f8fc;--white:#fff;--green:#12896b;--red:#d24d5f}
+*{box-sizing:border-box}body{margin:0;background:#f6f8fc;color:var(--ink);font:14px 'DM Sans',system-ui,Segoe UI,sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}
+.shell{display:flex;min-height:100vh}.sidebar{width:238px;background:#111f35;color:#e4eaf9;padding:32px 18px;display:flex;flex-direction:column;gap:42px;position:sticky;top:0;height:100vh;flex:none}
+.brand{display:flex;align-items:center;gap:11px;padding:0 10px}.brand-mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#9b8dff,#5971fa);display:grid;place-items:center;color:white;font-size:22px;box-shadow:0 7px 20px #526afa46}.brand-name{font-size:19px;font-weight:800;letter-spacing:-.75px}.brand-name span{color:#92a2ff}.brand-small{font-size:10px;text-transform:uppercase;color:#8497b2;letter-spacing:1.4px;margin-top:3px}
+.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;color:#9aabc4;text-align:left;padding:13px 15px;border-radius:12px;font-weight:650;display:flex;align-items:center;gap:13px;width:100%;transition:.18s}.nav button .symbol{font-size:19px;width:21px;text-align:center}.nav button:hover{background:#ffffff0b;color:white}.nav button.active{background:#293954;color:white}.nav button.active:before{content:"";height:17px;width:3px;border-radius:8px;background:#8794ff;position:absolute;margin-left:-15px}.side-bottom{margin-top:auto;padding:16px 13px;border:1px solid #33435e;border-radius:14px;background:#ffffff05}.side-bottom small{display:block;color:#91a4bf;margin-top:6px;font-size:12px;line-height:1.55}.status-dot{display:inline-block;border-radius:50%;width:8px;height:8px;background:#5bd6a1;margin-right:7px}.main{padding:32px 48px 64px;max-width:1550px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:38px}.breadcrumb{color:#91a0b3;font-size:13px;font-weight:700}.top-right{display:flex;gap:12px;align-items:center}.pill{border:1px solid #e3e9f2;border-radius:999px;background:#fff;padding:9px 14px;color:#526079;font-size:12px;font-weight:700}
+h1,h2,h3,p{margin-top:0}h1{font-family:Manrope,sans-serif;font-size:34px;letter-spacing:-1.7px;margin:0 0 12px;font-weight:800}h2{font-family:Manrope,sans-serif;font-size:22px;letter-spacing:-.9px;font-weight:800}h3{font-size:16px;letter-spacing:-.2px;margin-bottom:8px}.sub{color:#8794a7;line-height:1.7}.page{display:none}.page.active{display:block}.section-header{margin-bottom:27px}.section-header .sub{font-size:15px;max-width:700px}
+.grid-main{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(310px,.8fr);gap:24px;align-items:start}.panel{background:white;border:1px solid var(--line);border-radius:20px;box-shadow:0 10px 35px #1e345407;padding:25px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:21px}.label{font-size:12px;font-weight:750;color:#6f8199;text-transform:uppercase;letter-spacing:1.05px}.panel p{line-height:1.65}
+input[type=text],input[type=password],input[type=number],select{width:100%;border:1px solid #dde5ef;background:#fbfcff;border-radius:11px;padding:13px 13px;color:#24334a;outline:0;transition:.16s}input:focus,select:focus{border-color:#8595fa;box-shadow:0 0 0 3px #5267ef12}input::placeholder{color:#a0acbc}
+button.primary{background:var(--blue);border:1px solid var(--blue);color:white;padding:13px 19px;border-radius:11px;font-weight:750;box-shadow:0 7px 16px #5067ef24;transition:.15s}button.primary:hover{background:#3b53df}
+button.secondary{background:white;border:1px solid #e0e7f0;color:#344764;padding:12px 17px;border-radius:11px;font-weight:750}button.secondary:hover{background:#f4f6ff;border-color:#cbd5ea}
+button.ghost{border:0;background:transparent;color:#566bdb;font-weight:750;padding:8px}
+button.small{padding:9px 12px;font-size:12px}a{color:#5369e8;text-decoration:none}a:hover{text-decoration:underline}
+.search-box{display:flex;gap:10px}.search-box input{flex:1}.hint{color:#91a1b3;font-size:12px;line-height:1.5}.divider{height:1px;background:var(--line);margin:22px 0}
+.source-preview{margin-top:20px;display:none;gap:12px;align-items:center;border:1px solid #d8e2ef;border-radius:14px;padding:11px;background:#fbfdff}.source-preview.visible{display:flex}.source-preview img{width:116px;aspect-ratio:16/9;object-fit:cover;border-radius:9px;background:#eef3fc}.source-preview strong{font-size:13px;display:block;margin-bottom:5px;line-height:1.4}.source-preview span{color:#8795a8;font-size:12px}
+.results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:19px}.result{display:flex;gap:12px;align-items:center;padding:9px;background:#fff;border:1px solid #e7ebf1;border-radius:13px;cursor:pointer;min-width:0;transition:.15s}.result:hover,.result.selected{border-color:#8595ff;background:#f7f8ff;box-shadow:0 6px 16px #5267ef0b}.result img{width:118px;aspect-ratio:16/9;object-fit:cover;border-radius:8px;flex:none}.result strong{font-size:12px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.result small{color:#93a0b2;display:block;margin-top:7px}.result .play-badge{color:#5168ec;font-size:11px;font-weight:750;margin-top:5px}
+.field{margin-bottom:17px}.field label{display:block;font-weight:750;font-size:12px;color:#53627a;margin-bottom:9px}.control-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.actions{display:flex;gap:10px;flex-wrap:wrap}
+.feature-card{background:linear-gradient(125deg,#eff1ff,#fafbff);border:1px solid #dfe4ff;border-radius:14px;padding:18px;display:flex;gap:12px;margin-top:17px}.feature-icon{background:#e1e5ff;border-radius:10px;width:32px;height:32px;display:grid;place-items:center;color:#586bdf;flex:none}.feature-card strong{display:block;font-size:13px;margin-bottom:4px}.feature-card p{font-size:12px;color:#7788a0;margin:0}
+.strip{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}.stat{border:1px solid #e3eaf2;background:#fff;border-radius:15px;padding:16px 20px;min-width:142px;flex:1}.stat b{display:block;font-size:27px;letter-spacing:-.9px;margin-top:7px}.stat small{color:#8493a9}
+.clips-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}.clip{border:1px solid var(--line);background:white;border-radius:17px;overflow:hidden;box-shadow:0 7px 18px #14284808}.clip video{width:100%;aspect-ratio:9/13;max-height:340px;background:#101827;display:block;object-fit:contain}.clip-body{padding:16px}.clip h3{font-size:14px;line-height:1.4;min-height:37px;margin:0 0 9px}.clip-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:#8795a7;margin-bottom:16px}.chip{display:inline-block;font-size:11px;border-radius:7px;padding:5px 8px;background:#f0f3fc;color:#62728d;font-weight:750}.chip.good{color:#137b5e;background:#e9f8f1}.chip.warn{color:#936d20;background:#fff5db}.chip.bad{color:#bd4660;background:#fff0f3}.clip-footer{border-top:1px solid #eef1f5;padding-top:14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.empty{padding:42px 22px;text-align:center;color:#8b9db3;background:#fff;border:1px dashed #dce5f0;border-radius:16px;margin-top:12px}.empty b{display:block;color:#41546e;font-size:15px;margin:10px 0}.empty .emoji{font-size:38px}
+.settings-layout{display:grid;grid-template-columns:1fr 1fr;gap:23px}.settings-layout .panel{height:100%}.helper-link{display:inline-block;margin-top:10px;font-size:12px;font-weight:700}
+.list-check{display:grid;gap:10px;margin:13px 0}.list-check label{display:flex;gap:10px;align-items:center;font-weight:650}.list-check input{accent-color:var(--blue);width:17px;height:17px}
+.task{padding:16px 0;border-bottom:1px solid #e8edf4}.task:last-child{border-bottom:0}.task-top{display:flex;align-items:center;justify-content:space-between;gap:15px}.task strong{font-size:13px}.task p{margin:5px 0;color:#8a99ae;font-size:12px}.progress{width:100%;height:6px;background:#edf0f6;border-radius:10px;overflow:hidden;margin-top:10px}.progress span{display:block;height:100%;background:#6778f2;border-radius:10px}
+button.danger{color:#ad2c48;border-color:#f0bfc9;background:#fff9fa}
+button.danger:hover:not(:disabled){background:#fff0f3;color:#98233d}
+button:disabled{opacity:.55;cursor:not-allowed}
+dialog{border:none;border-radius:20px;box-shadow:0 40px 100px #0a19396b;padding:0;width:min(450px,calc(100% - 24px))}dialog::backdrop{background:#101e35a8;backdrop-filter:blur(3px)}.modal-inner{padding:28px}.modal-inner h2{margin-bottom:10px}.modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:22px}
+#toast{position:fixed;bottom:25px;right:25px;max-width:420px;background:#17253d;color:#fff;border-radius:13px;padding:15px 19px;box-shadow:0 18px 50px #111b3250;font-weight:600;z-index:10;opacity:0;transform:translateY(20px);transition:.2s;pointer-events:none;line-height:1.5}#toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:1200px){.main{padding:26px}.clips-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.results{grid-template-columns:1fr}}
+@media(max-width:900px){.grid-main,.settings-layout{grid-template-columns:1fr}.sidebar{width:76px;padding:24px 10px}.brand-name,.brand-small,.nav .nav-text,.side-bottom{display:none}.brand{padding:0;justify-content:center}.nav button{justify-content:center;padding:12px 9px}.nav button .symbol{font-size:21px}.main{padding:22px}}
+@media(max-width:600px){.sidebar{width:62px}.main{padding:16px}.clips-grid{grid-template-columns:1fr}.search-box{flex-wrap:wrap}.search-box button{width:100%}h1{font-size:27px}.top{margin-bottom:28px}.control-row{grid-template-columns:1fr}}
+.search-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:16px;padding:15px;border:1px solid #e4eafa;border-radius:14px;background:#f7f9ff}.search-filters .field{margin:0;min-width:0}.search-filters label{font-size:10px;letter-spacing:.35px;white-space:nowrap}.search-filters select,.search-filters input{padding:11px 9px;font-size:12px;min-width:0}.results-summary{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:12px;color:#7586a2}.result{padding:12px!important;align-items:stretch!important;box-shadow:0 3px 13px #213e6508}.result:hover{transform:translateY(-2px);box-shadow:0 9px 27px #253c7518}.result img{width:146px!important;border-radius:10px!important}.result-info{display:flex;flex-direction:column;min-width:0;justify-content:center}.result-info strong{font-size:13px!important;-webkit-line-clamp:3!important}.result-info small{margin-top:6px!important;line-height:1.4}.result .play-badge{margin-top:9px!important}.result.selected{outline:2px solid #5067ef}.result .video-number{color:#97a2b7;font-size:10px;font-weight:750;letter-spacing:.3px;margin-bottom:5px}@media(max-width:1350px){.search-filters{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.search-filters{grid-template-columns:1fr}.result img{width:105px!important}.results{grid-template-columns:1fr}}
+.live-dot{font-size:11px;color:#d12b54;font-weight:850;letter-spacing:1px;vertical-align:middle;margin-left:7px}.live-workspace{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(345px,.85fr);gap:24px;align-items:start}.live-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;max-height:320px;overflow:auto;padding:6px 3px;margin:15px 0}.live-result{display:flex;align-items:center;gap:9px;text-align:left;border:1px solid #e3e8f1;border-radius:12px;background:#fff;padding:8px;cursor:pointer;min-width:0}.live-result:hover,.live-result.chosen{border-color:#6174e6;background:#f3f5ff}.live-result img{width:96px;aspect-ratio:16/9;object-fit:cover;border-radius:7px}.live-result strong{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:12px;line-height:1.4}.live-result small{display:block;color:#8696ae;font-size:11px;margin-top:5px}.live-empty{color:#8192a8;font-size:13px;grid-column:1/-1;padding:20px 2px}.live-player{position:relative;aspect-ratio:16/9;background:#101a2c;border-radius:13px;overflow:hidden;display:grid;place-items:center}.live-player iframe{width:100%;height:100%;border:0}.live-player-empty{text-align:center;color:#9aa8c3;font-size:36px}.live-player-empty p{font-size:13px}.live-status-row{display:flex;justify-content:space-between;align-items:center;gap:8px}.live-status-row strong{font-variant-numeric:tabular-nums}.live-capture-note{font-size:12px;color:#74849e;line-height:1.6;margin:14px 0 2px}.live-divider{height:1px;background:#e8edf5;margin:18px 0}.live-range-label{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:12px;margin-bottom:12px}.live-range-label span{color:#8798b1}.live-marker-buttons{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:15px}.live-duration{font-size:12px;font-weight:750;background:#f1f5ff;color:#5164c9;padding:10px;border-radius:8px;margin-bottom:18px}.live-editor input[type=number]{font-variant-numeric:tabular-nums}.live-status-row .chip.recording{background:#ffe7ec;color:#c32b4e}.live-timeline{background:#f8faff;border:1px solid #e4e9f6;border-radius:13px;padding:14px;margin:0 0 18px}.live-timeline-heading{display:flex;align-items:center;justify-content:space-between;gap:5px;font-variant-numeric:tabular-nums;font-size:11px;color:#7586a2}.live-timeline-heading strong{font-weight:600}.live-timeline-track{position:relative;height:36px;margin:7px 4px 0;display:flex;align-items:center}.live-timeline-track:before{content:"";position:absolute;width:100%;height:7px;left:0;top:15px;background:#dce3f2;border-radius:99px;pointer-events:none}.live-timeline-fill{position:absolute;left:0;top:15px;height:7px;border-radius:99px;background:#6377ed;pointer-events:none}.live-timeline-track input[type=range]{position:absolute;left:0;top:1px;width:100%;height:32px;margin:0;appearance:none;-webkit-appearance:none;background:transparent;pointer-events:none}.live-timeline-track input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;background:#fff;border:3px solid #5267ef;border-radius:50%;width:19px;height:19px;pointer-events:auto;cursor:ew-resize;box-shadow:0 2px 8px #152b6840}.live-timeline-track input[type=range]::-moz-range-thumb{background:#fff;border:3px solid #5267ef;border-radius:50%;width:14px;height:14px;pointer-events:auto;cursor:ew-resize}.live-timeline-track input:disabled{opacity:.45}.live-timeline-presets{display:flex;gap:8px;margin-top:9px}@media(max-width:1350px){.live-workspace{grid-template-columns:1fr}.live-results{max-height:260px}}@media(max-width:650px){.live-results{grid-template-columns:1fr}.live-range-label{display:block}}
+.trash-nav-count[hidden]{display:none!important}.trash-nav-count{display:inline-flex;justify-content:center;align-items:center;border-radius:20px;padding:1px 7px;background:#344660;color:#fff;font-size:11px;margin-left:3px}.trash-warning{padding:15px 17px;border:1px solid #f1d9b2;background:#fffaf2;color:#7a5d3a;border-radius:13px;margin:0 0 18px;font-size:12px;line-height:1.65}.trash-toolbar{margin-bottom:16px}.trash-stat-strip{margin-top:0}.trash-stat-strip .stat b{font-size:24px}.trash-card{border:1px solid #e0e6ef;background:#fff;border-radius:16px;overflow:hidden}.trash-card video{width:100%;aspect-ratio:16/10;object-fit:contain;display:block;background:#0f1c2f}.trash-card .clip-body{padding:15px}.trash-card .clip-footer{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.trash-card .clip-footer .actions{justify-content:flex-end}.trash-card .trash-file{font-size:11px;color:#8190a5;overflow-wrap:anywhere;margin:6px 0 11px}.trash-card .trash-card-meta{font-size:11px;color:#79899d;line-height:1.7;margin-bottom:12px}.trash-card.missing{border-style:dashed;background:#fbfcff}.trash-no-video{aspect-ratio:16/10;background:#f0f4fa;display:flex;justify-content:center;align-items:center;flex-direction:column;color:#8495ac;font-size:12px}.trash-no-video .trash-missing-icon{font-size:27px;margin-bottom:10px}.trash-card input[type=checkbox]{accent-color:#5067ef}@media(max-width:700px){.trash-card .clip-footer{display:block}.trash-card .clip-footer .actions{margin-top:10px;justify-content:flex-start}}.model-picker{position:relative}.model-picker-trigger{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:48px;gap:10px;border:1px solid #d9e2ee;border-radius:11px;padding:12px 14px;color:#34435b;text-align:left;background:#fbfcff;font-weight:700}.model-picker-trigger:hover{border-color:#6e7dea;background:#f9faff}.model-picker-trigger:focus-visible{outline:3px solid #9bafff}.model-picker-trigger span:first-child{min-width:0;overflow-wrap:anywhere}.model-picker-popover{position:relative;background:#fff;border:1px solid #dfe5f1;box-shadow:0 14px 32px #11294c1a;border-radius:12px;margin-top:8px;padding:10px;z-index:5}.model-picker-popover[hidden]{display:none}.model-picker-popover input{width:100%;font-size:13px;padding:11px 12px;margin-bottom:9px}.model-picker-list{max-height:280px;overflow-y:auto;overscroll-behavior:contain}.model-picker-row{display:flex;align-items:center;gap:5px;border-radius:9px;margin-bottom:3px;padding-right:4px}.model-picker-row:hover,.model-picker-row.active{background:#f1f4ff}.model-picker-select{min-width:0;flex:1;text-align:left;background:transparent;border:none;padding:9px 7px;overflow-wrap:anywhere;color:#23344c;font-size:12px}.model-picker-select .model-picker-name{display:block;font-weight:750}.model-picker-select .model-picker-provider{display:block;font-size:10px;color:#8290a5;margin-top:3px}.model-picker-star{flex:none;width:38px;height:38px;display:grid;place-items:center;border:0;border-radius:10px;background:transparent;color:#a1aec4;font-size:22px}.model-picker-star:hover{background:#fff4d8;color:#cc901d}.model-picker-star.favorited{color:#efaa22}.model-picker-star:focus-visible{outline:2px solid #efaa22}.model-picker-empty{font-size:12px;padding:15px;color:#8490a8;text-align:center}.model-picker-section{padding:8px 7px 4px;color:#7e8db0;font-size:10px;letter-spacing:.6px;font-weight:800;text-transform:uppercase}#createModal{width:min(650px,calc(100% - 24px))}
+/* Identidade visual YouTube: branco/vermelho ou preto/vermelho, em todas as páginas. */
+html[data-theme="light"]{
+ color-scheme:light;--ink:#1b1d23;--muted:#747985;--line:#e5e5e9;
+ --blue:#e21b23;--soft:#fafafb;--white:#fff;--red:#df1e2c;
+}
+html[data-theme="light"] body{background:#f8f8fa}
+html[data-theme="light"] .sidebar{background:#fff;color:#151923;border-right:1px solid #ededf0}
+html[data-theme="light"] .nav button{color:#5a5e68}
+html[data-theme="light"] .nav button:hover{background:#fff2f3;color:#b9151c}
+html[data-theme="light"] .nav button.active{background:#fce9eb;color:#b91421}
+html[data-theme="light"] .nav button.active:before{background:#e21b23}
+html[data-theme="light"] .side-bottom{background:#fafafb;border-color:#e5e6e9}
+html[data-theme="light"] .brand-name span,html[data-theme="light"] a,
+html[data-theme="light"] button.ghost,html[data-theme="light"] .result .play-badge{color:#df1b22}
+html[data-theme="light"] .brand-mark{background:linear-gradient(145deg,#ff5d61,#d20d1d);box-shadow:0 8px 23px #dd1d2d25}
+html[data-theme="light"] .brand-small,html[data-theme="light"] .side-bottom small{color:#83858d}
+html[data-theme="light"] button.primary:hover{background:#b90f1d}
+html[data-theme="light"] .progress span,html[data-theme="light"] .live-timeline-fill{background:#e21b23}
+html[data-theme="light"] .feature-icon{background:#ffe8ea;color:#d21b23}
+html[data-theme="light"] .feature-card{background:linear-gradient(125deg,#fff1f2,#fff);border-color:#f9cfd2}
+html[data-theme="light"] .result.selected,html[data-theme="light"] .result:hover{background:#fff7f7;border-color:#ecafb5;outline-color:#ed565d}
+html[data-theme="light"] .chip{background:#fff0f1;color:#9a323b}
+html[data-theme="light"] .chip.good{background:#e9f8f1;color:#11795e}
+html[data-theme="light"] .chip.bad{background:#fff0f3;color:#b72338}
+
+html[data-theme="dark"]{
+ color-scheme:dark;--ink:#edf0f5;--muted:#a2a9ba;--line:#303039;
+ --blue:#ed1c24;--soft:#15151a;--white:#141419;--green:#71d7a3;--red:#ff5260;
+}
+html[data-theme="dark"] body{background:#0a0a0d;color:#edf0f5}
+html[data-theme="dark"] .sidebar{background:#050507;color:#f2f2f3;border-right:1px solid #252529}
+html[data-theme="dark"] .nav button{color:#b1b3bc}
+html[data-theme="dark"] .nav button:hover{color:#fff;background:#33151a}
+html[data-theme="dark"] .nav button.active{background:#3a151b;color:#fff}
+html[data-theme="dark"] .nav button.active:before{background:#f32c34}
+html[data-theme="dark"] .brand-mark{background:linear-gradient(145deg,#fb444d,#a50d1a);box-shadow:0 8px 23px #ff1f3528}
+html[data-theme="dark"] .brand-name span{color:#ff555f}
+html[data-theme="dark"] .side-bottom{border-color:#33343a;background:#111114}
+html[data-theme="dark"] .side-bottom small,html[data-theme="dark"] .brand-small{color:#a3a6af}
+html[data-theme="dark"] .panel,html[data-theme="dark"] .clip,html[data-theme="dark"] .stat,
+html[data-theme="dark"] .trash-card,html[data-theme="dark"] .result,
+html[data-theme="dark"] .live-result,html[data-theme="dark"] .live-suggestion,
+html[data-theme="dark"] .empty,html[data-theme="dark"] dialog,
+html[data-theme="dark"] .model-picker-popover{background:#151519;color:#ececf1;border-color:#35353d}
+html[data-theme="dark"] .search-filters,html[data-theme="dark"] .source-preview,
+html[data-theme="dark"] .live-timeline,html[data-theme="dark"] .turbo-option,
+html[data-theme="dark"] .live-recommend-block,html[data-theme="dark"] .model-picker-trigger{
+ background:#1c1c23;color:#eef0f5;border-color:#373741}
+html[data-theme="dark"] input[type=text],html[data-theme="dark"] input[type=password],
+html[data-theme="dark"] input[type=number],html[data-theme="dark"] select,
+html[data-theme="dark"] .model-picker-popover input{
+ background:#202027;color:#f5f6f9;border-color:#42434d}
+html[data-theme="dark"] input::placeholder{color:#9697a5}
+html[data-theme="dark"] .field label,html[data-theme="dark"] .label{color:#b5bac7}
+html[data-theme="dark"] .hint,html[data-theme="dark"] .sub,
+html[data-theme="dark"] .breadcrumb,html[data-theme="dark"] .results-summary,
+html[data-theme="dark"] .clip-meta,html[data-theme="dark"] .live-result small,
+html[data-theme="dark"] .live-suggestion small,html[data-theme="dark"] .task p,
+html[data-theme="dark"] .trash-card .trash-card-meta,
+html[data-theme="dark"] .model-picker-select .model-picker-provider{color:#a1a8b7}
+html[data-theme="dark"] .empty b,html[data-theme="dark"] .model-picker-select{color:#f1f2f5}
+html[data-theme="dark"] .chip{background:#29252c;color:#efb5ba}
+html[data-theme="dark"] .chip.good{background:#143426;color:#74e1a7}
+html[data-theme="dark"] .chip.bad{background:#481a23;color:#ff9baa}
+html[data-theme="dark"] button.secondary,html[data-theme="dark"] .pill,
+html[data-theme="dark"] .theme-toggle{
+ background:#24242b;border-color:#41414c;color:#e8ebf0}
+html[data-theme="dark"] button.secondary:hover{background:#37313a;border-color:#a8434c}
+html[data-theme="dark"] button.danger{background:#351b22;color:#ff8593;border-color:#75343f}
+html[data-theme="dark"] .feature-card{background:linear-gradient(140deg,#26151b,#171419);border-color:#57272f}
+html[data-theme="dark"] .feature-card p{color:#b7a4ad}
+html[data-theme="dark"] .feature-icon{background:#52242b;color:#ff929b}
+html[data-theme="dark"] .result:hover,html[data-theme="dark"] .result.selected,
+html[data-theme="dark"] .live-result:hover,html[data-theme="dark"] .live-result.chosen,
+html[data-theme="dark"] .live-suggestion:hover,html[data-theme="dark"] .live-suggestion.chosen,
+html[data-theme="dark"] .model-picker-row:hover,html[data-theme="dark"] .model-picker-row.active{
+ background:#2d1c22;border-color:#df4650}
+html[data-theme="dark"] .trash-warning{background:#271d15;color:#efd3a9;border-color:#6a4d2d}
+html[data-theme="dark"] .trash-no-video{background:#22232c;color:#b7bdcc}
+html[data-theme="dark"] .progress{background:#303039}
+html[data-theme="dark"] .progress span,html[data-theme="dark"] .live-timeline-fill{background:#e92029}
+html[data-theme="dark"] .live-timeline-track:before{background:#454550}
+html[data-theme="dark"] .divider,html[data-theme="dark"] .live-divider{background:#34343d}
+html[data-theme="dark"] .clip-footer,html[data-theme="dark"] .task{border-color:#34343d}
+html[data-theme="dark"] .live-duration{background:#361c25;color:#ffa0a6}
+html[data-theme="dark"] .model-picker-section{color:#db929a}
+html[data-theme="dark"] .model-picker-star{color:#c1abb0}
+html[data-theme="dark"] a,html[data-theme="dark"] button.ghost,
+html[data-theme="dark"] .result .play-badge{color:#ff5b65}
+html[data-theme="dark"] button.primary:hover{background:#c0101b}
+html[data-theme="dark"] #toast{background:#23232d;color:#fff;border:1px solid #43434f}
+html[data-theme="dark"] dialog::backdrop{background:#000b}
+html[data-theme="dark"] .trash-nav-count{background:#63242d}
+html[data-theme="dark"] .live-capture-note,html[data-theme="dark"] .live-timeline-heading{color:#b5baca}
+html[data-theme="dark"] .model-picker-star.favorited{color:#ffc14b}
+html[data-theme="dark"] .turbo-option.enabled{border-color:#df3947;background:#351a20}
+
+.theme-toggle{display:inline-flex;justify-content:center;align-items:center;gap:8px;
+ padding:9px 14px;border-radius:999px;background:#fff;color:#222632;
+ border:1px solid #e3e4e9;font-size:12px;font-weight:750;white-space:nowrap}
+.theme-toggle:hover{border-color:#e21b23;color:#e21b23}
+.theme-toggle #themeIcon{font-size:16px;color:#e21b23}
+.turbo-option{border:1px solid #e1e4ee;background:#fbfcff;border-radius:15px;padding:14px 16px;margin-top:18px}
+.turbo-option-head{display:flex;align-items:center;gap:9px}
+.turbo-label{display:flex;align-items:center;gap:7px;cursor:pointer;font-size:14px;font-weight:800}
+.turbo-label input{width:17px;height:17px;accent-color:#e21b23}
+.turbo-bolt{font-size:20px;display:inline-block;filter:grayscale(.65);transition:.2s}
+.turbo-option.enabled{background:#fff1f2;border-color:#f4afb5}
+.turbo-option.enabled .turbo-bolt{filter:none;animation:turboPulse 1.15s ease-in-out infinite alternate}
+@keyframes turboPulse{from{filter:drop-shadow(0 0 2px #ffbb33);transform:scale(1)}
+to{filter:drop-shadow(0 0 12px #ffb21f) drop-shadow(0 0 5px #ff2727);transform:scale(1.23)}}
+@media(prefers-reduced-motion:reduce){.turbo-option.enabled .turbo-bolt{animation:none}}
+.turbo-help{position:relative;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;cursor:help}
+.turbo-question{display:grid;place-items:center;font-size:12px;font-weight:800;color:#cf202b;border:1px solid #e4a1a8;width:21px;height:21px;border-radius:50%}
+.turbo-tooltip{display:none;position:absolute;top:28px;left:-118px;width:260px;
+ padding:12px 14px;color:#fff;background:#202126;border:1px solid #494b52;
+ border-radius:11px;box-shadow:0 15px 35px #0005;font-size:12px;line-height:1.5;z-index:7}
+.turbo-help:hover .turbo-tooltip,.turbo-help:focus-visible .turbo-tooltip{display:block}
+.turbo-caption{display:block;color:#a02e38;margin-top:9px;font-size:12px;line-height:1.5}
+.turbo-caption[hidden]{display:none}
+.live-recommend-block{margin:16px 0 10px;background:#f9faff;border:1px solid #e2e6ee;padding:13px;border-radius:14px}
+.live-recommend-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px;flex-wrap:wrap}
+.live-recommend-heading strong{font-size:13px}
+.live-recommend-heading small{display:block;color:#8995a8;font-size:11px;margin-top:5px;line-height:1.5}
+.live-search-label{font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.5px;color:#8b97a9;margin-top:16px}
+.live-recommend-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;
+ max-height:640px;overflow-y:auto;overscroll-behavior:contain;padding:4px 5px 5px 1px}
+.live-suggestion{display:flex;align-items:stretch;text-align:left;gap:10px;min-height:112px;
+ padding:8px;border:1px solid #e1e5ec;border-radius:11px;background:#fff;color:inherit;min-width:0;transition:.15s}
+.live-suggestion:hover,.live-suggestion.chosen{border-color:#e5414b;background:#fff6f6;transform:translateY(-1px)}
+.live-suggestion-poster{position:relative;display:block;flex:0 0 42%;min-width:0;align-self:center}
+.live-suggestion-poster img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:7px;display:block}
+.on-air-badge{position:absolute;bottom:4px;left:4px;border-radius:4px;background:#d71c28;
+ color:white;font-size:9px;font-weight:800;letter-spacing:.1px;padding:3px 5px}
+.live-suggestion-body{display:flex;flex-direction:column;min-width:0;justify-content:center;gap:6px}
+.live-suggestion-body strong{font-size:12px;line-height:1.45;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;overflow-wrap:anywhere}
+.live-suggestion-body small{font-size:11px;color:#8190a3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.live-recommend-grid .live-empty{grid-column:1/-1}
+@media(max-width:680px){
+ .top{align-items:flex-start;gap:12px}.top-right{flex-direction:column;align-items:flex-end}
+ .live-recommend-grid{grid-template-columns:1fr;max-height:610px}
+ .turbo-tooltip{left:-175px;width:min(255px,80vw)}
+}
+
+
+.live-recommend-outer{margin:0 0 23px;padding:21px}
+.live-recommend-outer .live-recommend-block{background:transparent;border:0;margin:0;padding:0}
+.live-recommend-outer .live-recommend-grid{
+ display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-auto-rows:184px;
+ gap:12px;max-height:385px;overflow-y:auto;overflow-x:hidden;
+ padding:5px 7px 6px 1px;scrollbar-gutter:stable;align-items:stretch}
+.live-recommend-outer .live-suggestion{height:184px;min-height:0;display:flex;flex-direction:column;gap:8px;padding:7px;overflow:hidden}
+.live-recommend-outer .live-suggestion-poster{flex:0 0 auto;width:100%}
+.live-recommend-outer .live-suggestion-poster img{aspect-ratio:16/9;width:100%;object-fit:cover}
+.live-recommend-outer .live-suggestion-body{flex:1;min-height:0;justify-content:flex-start;gap:3px;padding:0 3px}
+.live-recommend-outer .live-suggestion-body strong{font-size:11px;line-height:1.35;-webkit-line-clamp:2}
+.live-recommend-outer .live-suggestion-body small{font-size:10px}
+@media(max-width:1150px){
+ .live-recommend-outer .live-recommend-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:195px;max-height:425px}
+ .live-recommend-outer .live-suggestion{height:195px}
+}
+@media(max-width:800px){
+ .live-recommend-outer .live-recommend-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-height:425px}
+}
+@media(max-width:470px){
+ .live-recommend-outer .live-recommend-grid{grid-template-columns:1fr;max-height:425px}
+}
+
+
+.live-recommend-outer{margin:0 0 23px;padding:21px}
+.live-recommend-outer .live-recommend-block{background:transparent;border:0;margin:0;padding:0}
+.live-recommend-outer .live-recommend-grid{
+ display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-auto-rows:184px;
+ gap:12px;max-height:385px;overflow-y:auto;overflow-x:hidden;
+ padding:5px 7px 6px 1px;scrollbar-gutter:stable;align-items:stretch}
+.live-recommend-outer .live-suggestion{height:184px;min-height:0;display:flex;flex-direction:column;gap:8px;padding:7px;overflow:hidden}
+.live-recommend-outer .live-suggestion-poster{flex:0 0 auto;width:100%}
+.live-recommend-outer .live-suggestion-poster img{aspect-ratio:16/9;width:100%;object-fit:cover}
+.live-recommend-outer .live-suggestion-body{flex:1;min-height:0;justify-content:flex-start;gap:3px;padding:0 3px}
+.live-recommend-outer .live-suggestion-body strong{font-size:11px;line-height:1.35;-webkit-line-clamp:2}
+.live-recommend-outer .live-suggestion-body small{font-size:10px}
+@media(max-width:1150px){
+ .live-recommend-outer .live-recommend-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:195px;max-height:425px}
+ .live-recommend-outer .live-suggestion{height:195px}
+}
+@media(max-width:800px){
+ .live-recommend-outer .live-recommend-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-height:425px}
+}
+@media(max-width:470px){
+ .live-recommend-outer .live-recommend-grid{grid-template-columns:1fr;max-height:425px}
+}
+
+</style></head><body>
+<div class="shell">
+<aside class="sidebar">
+<div class="brand"><div class="brand-mark">✦</div><div><div class="brand-name">CutShort<span>+</span></div><div class="brand-small">CREATOR STUDIO</div></div></div>
+<nav class="nav" aria-label="Navegação">
+<button class="active" data-nav="explore"><span class="symbol">⌕</span><span class="nav-text">Explorar vídeos</span></button>
+<button data-nav="live"><span class="symbol">◉</span><span class="nav-text">Estúdio ao vivo</span></button>
+<button data-nav="clips"><span class="symbol">▣</span><span class="nav-text">Meus cortes</span></button>
+<button data-nav="trash"><span class="symbol">♻</span><span class="nav-text">Lixeira <span id="trashNavCount" class="trash-nav-count" hidden>0</span></span></button>
+<button data-nav="activity"><span class="symbol">◴</span><span class="nav-text">Atividade</span></button>
+<button data-nav="settings"><span class="symbol">⚙</span><span class="nav-text">Integrações</span></button>
+</nav>
+<div class="side-bottom"><div><span class="status-dot" id="healthDot"></span><strong>Estúdio local</strong></div><small>Seus vídeos, cortes e credenciais ficam neste computador.</small></div>
+</aside>
+<main class="main">
+<header class="top"><div class="breadcrumb">CutShortPlus / <span id="crumb">Explorar vídeos</span></div><div class="top-right"><button type="button" class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro e escuro" aria-pressed="false"><span id="themeIcon">◐</span><span id="themeLabel">Dark Theme</span></button><span class="pill" id="toolsLabel">● Verificando ferramentas</span></div></header>
+<section class="page active" id="view-explore">
+<div class="section-header"><h1>Encontre. Corte. Publique.</h1><p class="sub">Transforme vídeos longos em Shorts e Reels verticais em poucos cliques. Um fluxo simples, do vídeo à publicação.</p></div>
+<div class="grid-main">
+<div class="panel"><div class="panel-head"><div><h2 style="margin-bottom:4px">Encontre um vídeo</h2><div class="sub">Pesquise no YouTube ou cole um link</div></div><span class="chip">01 · Escolher</span></div>
+<div class="search-box"><input type="text" id="search" placeholder="Pesquisar vídeo, tema ou canal..." aria-label="Buscar vídeos"><button class="primary" id="btnSearch">⌕ &nbsp;Buscar</button></div>
+<div class="search-filters" aria-label="Filtros de pesquisa">
+<div class="field"><label for="sortSearch">PRIORIDADE</label><select id="sortSearch"><option value="relevance">Relevância</option><option value="date">Mais recentes</option><option value="views">Mais populares</option></select></div>
+<div class="field"><label for="publishedSearch">DATA DO ENVIO</label><select id="publishedSearch"><option value="any">Qualquer período</option><option value="today">Hoje</option><option value="week">Esta semana</option><option value="month">Este mês</option><option value="year">Este ano</option></select></div>
+<div class="field"><label for="durationSearch">DURAÇÃO</label><select id="durationSearch"><option value="any">Qualquer duração</option><option value="short">Menos de 3 min</option><option value="medium">3 a 20 min</option><option value="long">Mais de 20 min</option></select></div>
+<div class="field"><label for="titleFilter">PALAVRAS NO TÍTULO</label><input type="text" id="titleFilter" placeholder="Filtrar títulos..."></div>
+</div>
+<div class="results-summary" id="resultsSummary">Pesquise por assunto, criador ou nome do vídeo. Títulos localizados pelo YouTube são priorizados em português.</div>
+<div id="results" class="results"></div>
+<div class="divider"></div>
+<div class="field" style="margin-bottom:0"><label for="source">LINK DO YOUTUBE OU VÍDEO LOCAL</label>
+<input type="text" id="source" placeholder="https://youtube.com/watch?v=... ou arquivo local">
+<div class="actions" style="margin-top:12px"><button class="secondary small" id="btnInspect">Verificar link</button><button class="secondary small" id="btnImport">↑ Enviar vídeo do PC</button><input id="fileInput" type="file" accept="video/mp4,video/x-matroska,video/quicktime,video/webm" hidden></div></div>
+<div class="source-preview" id="sourcePreview"><img id="selectedThumb" alt="Capa do vídeo"><div><strong id="selectedTitle"></strong><span id="selectedDetails"></span></div></div>
+</div>
+<div class="panel"><div class="panel-head"><div><h2 style="margin-bottom:4px">Criar Shorts</h2><div class="sub">Configure e gere seus cortes</div></div><span class="chip">02 · Cortar</span></div>
+<div class="field"><label for="count">QUANTIDADE DE CORTES</label><select id="count"><option value="1">1 corte</option><option value="2">2 cortes</option><option value="3" selected>3 cortes</option><option value="4">4 cortes</option><option value="5">5 cortes</option><option value="6">6 cortes</option><option value="7">7 cortes</option><option value="8">8 cortes</option><option value="9">9 cortes</option><option value="10">10 cortes</option></select></div>
+<div class="field"><label for="seconds">DURAÇÃO MÁXIMA POR CORTE</label><select id="seconds"><option value="15">Até 15 segundos</option><option value="20">Até 20 segundos</option><option value="30">Até 30 segundos</option><option value="45">Até 45 segundos</option><option value="60" selected>Até 1 minuto</option></select></div>
+<div class="turbo-option">
+ <div class="turbo-option-head">
+  <label class="turbo-label" for="turboShort"><input type="checkbox" id="turboShort"><span class="turbo-bolt" aria-hidden="true">⚡</span><span>Turbo Short</span></label>
+  <span class="turbo-help" role="note" tabindex="0" aria-label="O que é Turbo Short?"><span class="turbo-question">?</span><span class="turbo-tooltip">Marque se você deseja criar o máximo de shorts possíveis do vídeo selecionado.</span></span>
+ </div>
+ <small id="turboCountHint" class="turbo-caption" hidden>⚡ O Turbo calcula automaticamente os cortes usando a duração escolhida, sem sobrepor trechos. Limite de segurança: 60 Shorts por operação.</small>
+</div>
+<label style="display:flex;align-items:flex-start;gap:9px;margin-top:17px;line-height:1.5;color:#50617b;font-size:12px"><input type="checkbox" id="autoPublish" style="margin-top:2px;accent-color:#5067ef">Publicar automaticamente no YouTube e na Página do Facebook após criar. O Facebook ficará público; o YouTube seguirá a privacidade configurada.</label>
+<button class="primary" id="btnCreate" style="width:100%;margin-top:17px;padding:15px">✦ &nbsp;Gerar meus cortes</button>
+<p class="hint" style="text-align:center;margin:14px 0 0">Sem marcar a opção, você poderá revisar tudo antes do envio.</p>
+</div></div>
+</section>
+<section class="page" id="view-live">
+<div class="section-header"><h1>Estúdio ao vivo <span class="live-dot">● LIVE</span></h1><p class="sub">Assista à transmissão enquanto grava um buffer local. Marque a entrada e a saída, ajuste os segundos e exporte diretamente para Meus cortes.</p></div>
+<div class="panel live-recommend-outer"><div class="live-recommend-block">
+ <div class="live-recommend-heading"><div><strong>◉ Lives recomendadas para você</strong><small id="liveRecommendContext">Carregando recomendações pelo histórico de cortes...</small></div><button type="button" class="secondary small" id="liveRecommendRefresh">↻ Atualizar lives</button></div>
+ <div id="liveRecommendations" class="live-recommend-grid" aria-live="polite"><div class="live-empty">Verificando transmissões em andamento...</div></div>
+</div>
+</div>
+<div class="live-workspace">
+<div class="panel">
+<div class="panel-head"><div><h2 style="margin-bottom:5px">Encontrar e assistir</h2><p class="sub" style="margin-bottom:0">Lives em transmissão agora no YouTube</p></div><span class="chip">01 · Assistir</span></div>
+<div class="search-box"><input id="liveSearchText" type="text" placeholder="Pesquisar lives: GTA 6, jogos, notícias..." aria-label="Pesquisar transmissões ao vivo"><button id="liveSearchBtn" class="primary">⌕ Encontrar</button></div>
+<div class="live-search-label">Buscar outras transmissões</div>
+<div class="live-results" id="liveResults"><div class="live-empty">Pesquise um assunto para descobrir lives ativas.</div></div>
+<div class="live-player" id="livePlayer"><div class="live-player-empty" id="livePlayerEmpty">▶<p>Escolha uma transmissão acima para assistir aqui.</p></div><iframe id="liveFrame" hidden title="Player de transmissão ao vivo do YouTube" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+<div class="actions" style="margin-top:12px"><button class="secondary small" id="liveOpenYouTube" disabled>↗ Abrir no YouTube</button><span class="hint">Alguns canais impedem a reprodução incorporada. Nesses casos, abra no YouTube.</span></div>
+</div>
+<div class="panel live-editor">
+<div class="panel-head"><div><h2 style="margin-bottom:4px">Cortador profissional</h2><p class="sub" style="margin:0">Marcação IN/OUT + exportação FFmpeg</p></div><span class="chip">02 · Cortar</span></div>
+<div class="live-status-row"><span id="liveState" class="chip">● Sem gravação</span><strong id="liveRecorded">00:00 gravados</strong></div>
+<div class="live-capture-note" id="liveCaptureNote">Selecione uma live e clique em iniciar gravação. A reprodução do YouTube e a captura são independentes e podem ter um pequeno atraso.</div>
+<div class="actions" style="margin:14px 0 18px"><button id="liveStart" class="primary" disabled>● Iniciar gravação</button><button id="liveStop" class="secondary danger" disabled>■ Parar gravação</button></div>
+<div class="live-divider"></div>
+<div class="live-range-label"><strong>Seleção de trecho</strong><span>Atalhos: [ entrada · ] saída</span></div>
+<div class="live-marker-buttons"><button id="liveMarkIn" class="secondary small" disabled>⟵ Marcar entrada [</button><button id="liveMarkOut" class="secondary small" disabled>Marcar saída ] ⟶</button></div>
+<div class="live-timeline" aria-label="Barra de seleção da gravação">
+<div class="live-timeline-heading"><span>00:00</span><strong>Faixa gravada · arraste os marcadores</strong><span id="liveTimelineEnd">00:00</span></div>
+<div class="live-timeline-track"><div id="liveTimelineFill" class="live-timeline-fill"></div>
+<input id="liveTimelineIn" type="range" aria-label="Ajustar início" min="0" max="0.1" value="0" step="0.1" disabled>
+<input id="liveTimelineOut" type="range" aria-label="Ajustar fim" min="0" max="0.1" value="0" step="0.1" disabled></div>
+<div class="live-timeline-presets"><button id="liveLast30" class="secondary small" disabled>Últimos 30s</button><button id="liveLast60" class="secondary small" disabled>Últimos 60s</button></div>
+</div>
+<div class="control-row"><div class="field"><label for="liveIn">INÍCIO (SEGUNDOS)</label><input id="liveIn" type="number" step="0.1" min="0" value="0"></div><div class="field"><label for="liveOut">FIM (SEGUNDOS)</label><input id="liveOut" type="number" step="0.1" min="0" value="0"></div></div>
+<div class="live-duration" id="liveSelectionDuration">Trecho: 0 segundos</div>
+<div class="field"><label for="liveClipTitle">TÍTULO DO CORTE</label><input id="liveClipTitle" type="text" maxlength="100" placeholder="Ex.: Momento surpreendente na live"></div>
+<button id="liveExport" class="primary" style="width:100%" disabled>✂ Exportar corte para Meus cortes</button>
+<p class="hint" style="margin:12px 0">Somente trechos já gravados podem ser exportados. O arquivo final será vertical 9:16 com H.264 e AAC. Nenhum vídeo é publicado automaticamente.</p>
+<div class="live-divider"></div><div class="field"><label for="liveArchives">GRAVAÇÕES ANTERIORES SALVAS NESTE PC</label><select id="liveArchives"><option value="">Selecione uma gravação anterior</option></select></div>
+<button id="liveRestore" class="secondary small">↶ Abrir gravação para editar</button>
+<p class="hint" style="margin:12px 0 0">Captura por até 30 minutos por sessão. Os segmentos permanecem em data/live_sessions, sem exclusão automática. Grave apenas conteúdo que você pode utilizar.</p>
+</div></div></section>
+<section class="page" id="view-clips"><div class="section-header"><h1>Meus cortes</h1><p class="sub">Assista, marque um ou vários Shorts para publicar ou remover da biblioteca.</p></div>
+<div class="strip"><div class="stat"><small>Cortes criados</small><b id="statClips">0</b></div><div class="stat"><small>Enviados ao YouTube</small><b id="statYT">0</b></div><div class="stat"><small>Enviados ao Facebook</small><b id="statFB">0</b></div></div>
+<div class="panel-head"><h2 style="margin:0">Biblioteca</h2><div class="actions"><button class="secondary" id="selectAll">Selecionar todos</button><button class="secondary danger" id="deleteSelected" disabled>▢ Remover selecionados</button><button class="secondary" id="openTrash">♻ Abrir Lixeira</button><button class="secondary" id="undoDelete" hidden>↶ Desfazer remoção</button><button class="primary" id="publishSelected">↑ &nbsp;Publicar selecionados</button></div></div>
+<p class="hint" id="clipsSelectionInfo" style="margin:0 0 14px">Nenhum corte selecionado. Remover envia o arquivo para a lixeira local, sem excluir publicações online.</p>
+<div class="clips-grid" id="clips"></div>
+</section>
+<section class="page" id="view-trash">
+<div class="section-header">
+<h1>Lixeira de cortes</h1>
+<p class="sub">Visualize seus vídeos removidos, restaure para Meus cortes ou apague definitivamente os MP4 da lixeira.</p></div>
+<div class="strip trash-stat-strip">
+<div class="stat"><small>Vídeos recuperáveis</small><b id="trashAvailableCount">0</b></div>
+<div class="stat"><small>Espaço ocupado</small><b id="trashSizeTotal">0 MB</b></div>
+<div class="stat"><small>Registros sem arquivo</small><b id="trashMissingCount">0</b></div>
+</div>
+<div class="panel trash-toolbar">
+<div class="panel-head" style="margin-bottom:10px"><h2 style="margin:0">Arquivos na lixeira</h2><div class="actions">
+<button class="secondary small" id="trashRefresh">↻ Atualizar</button>
+<button class="secondary small" id="trashSelectAll">Selecionar todos</button>
+</div></div>
+<div class="actions">
+<button class="secondary" id="trashRestoreSelected" disabled>↶ Restaurar selecionados</button>
+<button class="secondary danger" id="trashDeleteSelected" disabled>♻ Excluir permanentemente</button>
+</div>
+<p class="hint" id="trashSelectionInfo" style="margin:12px 0 0">Nenhum vídeo selecionado.</p>
+</div>
+<div class="trash-warning"><strong>Exclusão definitiva:</strong> remove os MP4 locais desta lixeira, sem desfazer. Não apaga vídeos já publicados no YouTube/Facebook e não remove cópias existentes nos backups.</div>
+<div id="trashGrid" class="clips-grid" aria-live="polite">
+<div class="empty" style="grid-column:1/-1">Abra a lixeira para carregar os vídeos removidos.</div>
+</div>
+</section>
+<section class="page" id="view-activity"><div class="section-header"><h1>Atividade</h1><p class="sub">Acompanhe o processamento e as publicações sem precisar abrir o terminal.</p></div><div class="panel"><div class="panel-head"><h2 style="margin:0">Tarefas recentes</h2><div class="actions"><button class="secondary small" id="refreshTasks">Atualizar</button><button class="secondary danger small" id="clearActivities">🗑 Limpar Atividades</button></div></div><div id="tasks"></div><p class="hint" style="margin:15px 0 0">Limpar remove apenas os registros de tarefas concluídas ou com erro. Os vídeos e tarefas em andamento são preservados.</p></div></section>
+<section class="page" id="view-settings"><div class="section-header"><h1>Integrações</h1><p class="sub">Conecte suas contas uma única vez para pesquisar com a API, selecionar momentos com IA e publicar Shorts/Reels.</p></div>
+<div class="settings-layout">
+<div class="panel"><div class="panel-head"><h2>▶ YouTube</h2><span id="ytState" class="chip">Não conectado</span></div>
+<p class="sub">Crie as credenciais OAuth de um aplicativo do tipo <strong>Desktop</strong> no Google Cloud. Baixe o JSON e informe o caminho do arquivo.</p>
+<div class="field"><label for="yt_client_file">CAMINHO DO ARQUIVO JSON OAUTH</label><input type="text" id="yt_client_file" placeholder="C:\caminho\client_secret.json"></div>
+<div class="field"><label for="youtube_api_key">API KEY DO YOUTUBE (OPCIONAL)</label><input type="password" id="youtube_api_key" placeholder="Deixe vazio para manter a chave salva"></div>
+<div class="actions"><button class="secondary small" id="btnYtConnect">Conectar canal YouTube</button><a class="helper-link" target="_blank" rel="noopener noreferrer" href="https://console.cloud.google.com/apis/credentials">Criar credenciais ↗</a><a class="helper-link" target="_blank" rel="noopener noreferrer" href="https://console.cloud.google.com/apis/library/youtube.googleapis.com">Ativar API ↗</a></div>
+<p class="hint" style="margin-top:15px">Ao clicar Conectar, uma autorização oficial do Google será aberta no navegador. O canal correto deve ser selecionado na conta Google.</p>
+</div>
+<div class="panel"><div class="panel-head"><h2>f &nbsp;Facebook Reels</h2><span class="chip" id="fbState">Não conectado</span></div>
+<p class="sub">Publicação oficial em <strong>Páginas do Facebook</strong> via Graph API. Exige token da Página com permissões aprovadas.</p>
+<div class="field"><label for="meta_page_id">ID DA PÁGINA</label><input type="text" id="meta_page_id" placeholder="ID numérico da Página"></div>
+<div class="field"><label for="meta_page_token">TOKEN DE ACESSO DA PÁGINA</label><input type="password" id="meta_page_token" placeholder="Deixe vazio para manter o token salvo"></div>
+<div class="actions"><button class="secondary small" id="btnFbTest">Testar conexão</button><a class="helper-link" href="https://developers.facebook.com/apps/" target="_blank" rel="noopener noreferrer">Criar app Meta ↗</a><a class="helper-link" href="https://developers.facebook.com/tools/explorer/" target="_blank" rel="noopener noreferrer">Graph Explorer ↗</a></div>
+<p class="hint" style="margin-top:15px">Permissões: pages_manage_posts, pages_show_list e pages_read_engagement. Não publica em perfis pessoais.</p></div>
+<div class="panel"><div class="panel-head"><h2>✧ Inteligência artificial</h2><span id="aiState" class="chip">Opcional</span></div>
+<p class="sub">Escolha o provedor e o modelo para selecionar os melhores trechos. Cada serviço tem chave própria e custos/limites independentes.</p>
+<div class="field"><label for="ai_provider">PROVEDOR DE IA</label><select id="ai_provider"><option value="openai">OpenAI (GPT)</option><option value="anthropic">Anthropic (Claude)</option><option value="xai">xAI (Grok)</option><option value="gemini">Google (Gemini)</option><option value="deepseek">DeepSeek</option><option value="mistral">Mistral AI</option><option value="groq">Groq Cloud</option><option value="openrouter">OpenRouter · modelos gratuitos</option><option value="nvidia">NVIDIA Build · créditos de avaliação</option></select></div>
+<div class="field"><label for="ai_api_key">CHAVE DO PROVEDOR SELECIONADO</label><input type="password" id="ai_api_key" autocomplete="off" placeholder="Digite sua API Key">
+<p id="aiKeyInfo" class="hint" style="margin:8px 0 0">Verificando a chave salva...</p></div>
+<div class="field" id="nvidiaModelBox" style="display:none"><label for="model">MODELO DISPONÍVEL</label><select id="model" disabled><option value="">Clique em Buscar modelos</option></select>
+<p id="aiModelsInfo" class="hint" style="margin:9px 0 0">OpenRouter lista somente opções gratuitas :free. NVIDIA pode exigir créditos de avaliação.</p></div>
+<div class="field" id="manualModelBox" style="display:none"><label for="manualModel">ID DE MODELO NVIDIA (CASO A LISTA NÃO ESTEJA DISPONÍVEL)</label><input id="manualModel" type="text" placeholder="Ex.: meta/llama-3.1-8b-instruct"></div>
+<p class="hint" id="otherProviderNote" style="margin:7px 0 13px">O modelo será escolhido na janela de criação de Shorts, com opção de favoritar ★.</p>
+<div class="actions"><button class="secondary small" id="btnLoadModels">↻ Consultar catálogo</button><button class="secondary small" id="btnTestAI">✓ Testar geração</button><a class="helper-link" id="aiKeyLink" href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">Criar chave ↗</a><a class="helper-link" id="aiCreditsLink" href="https://platform.openai.com/settings/organization/billing/overview" target="_blank" rel="noopener noreferrer">Créditos ↗</a></div></div>
+<div class="panel"><div class="panel-head"><h2>⚙ Preferências</h2></div>
+<div class="field"><label for="privacy">VISIBILIDADE PADRÃO NO YOUTUBE</label><select id="privacy"><option value="private">Privado (mais seguro)</option><option value="unlisted">Não listado</option><option value="public">Público</option></select></div>
+<div class="feature-card"><div class="feature-icon">🔒</div><div><strong>Segredos protegidos</strong><p>Tokens e chaves são criptografados com DPAPI do seu usuário Windows. O servidor escuta somente em 127.0.0.1.</p></div></div>
+<button class="primary" id="btnSave" style="width:100%;margin-top:20px">Salvar integrações</button></div>
+</div>
+<div class="panel" style="margin-top:23px"><h3>Como começar</h3><p class="sub" style="margin:0">1. Pesquise ou envie um vídeo que você tenha direito de usar. &nbsp; 2. Gere e revise os cortes. &nbsp; 3. Conecte os canais acima e publique. Você pode usar o editor sem conectar nenhuma conta. As APIs podem exigir revisão ou permissões adicionais.</p></div>
+</section>
+</main></div>
+<dialog id="createModal"><div class="modal-inner">
+<h2>Escolha a IA deste Short</h2><p class="sub">Escolha um modelo diretamente. Clique na estrela ao lado de cada nome para salvar como favorito — os favoritos aparecem primeiro.</p>
+<div class="field" id="createModelBox"><label for="createModelTrigger">MODELO PARA ESTA GERAÇÃO</label>
+<div class="model-picker" id="createModelPicker">
+<button class="model-picker-trigger" id="createModelTrigger" type="button" aria-expanded="false" aria-controls="createModelPopover">
+<span id="createModelSelected">Carregando modelos disponíveis...</span><span aria-hidden="true">▾</span></button>
+<div class="model-picker-popover" id="createModelPopover" hidden>
+<input id="createModelSearch" type="text" autocomplete="off" placeholder="Pesquisar modelo ou provedor..." aria-label="Pesquisar modelos de IA">
+<div class="model-picker-list" id="createModelOptions" role="group" aria-label="Modelos de IA"></div>
+</div></div></div>
+<p class="hint" id="createAiInfo">Carregando modelos dos provedores com chave configurada em Integrações...</p>
+<div class="modal-footer"><button class="secondary" id="cancelCreate">Cancelar</button><button class="primary" id="confirmCreate">Gerar Shorts</button></div></div></dialog>
+<dialog id="publishModal"><div class="modal-inner"><h2>Publicar cortes</h2><p class="sub">Escolha onde enviar os vídeos selecionados. Esta ação envia os arquivos às plataformas.</p>
+<div class="list-check"><label><input type="checkbox" id="pubYT" checked> YouTube Shorts</label><label><input type="checkbox" id="pubFB" checked> Facebook Reels (Página)</label></div>
+<div class="field" style="margin-top:17px"><label for="pubPrivacy">VISIBILIDADE NO YOUTUBE</label><select id="pubPrivacy"><option value="private">Privado</option><option value="unlisted">Não listado</option><option value="public">Público</option></select></div>
+<p class="hint" id="pubCount"></p><div class="modal-footer"><button class="secondary" id="cancelPublish">Cancelar</button><button class="primary" id="confirmPublish">Confirmar envio</button></div></div></dialog>
+<div role="status" id="toast"></div>
+<script>
+'use strict';
+var csrf = '', page='explore', clips=[], selected=new Set(), latestTasks=[], pendingPublish=[], settings={};
+var lastRemoved=[];
+var deletedClips=[],selectedTrash=new Set(),trashLoading=false;
+var modelsLoaded=false, loadingModels=false, aiApiValidated=false, modelCache={};
+const providers=['openai','openrouter','nvidia','anthropic','xai','gemini','deepseek','mistral','groq'];
+const modelField={openai:'model',openrouter:'openrouter_model',nvidia:'nvidia_model',
+ anthropic:'anthropic_model',xai:'xai_model',gemini:'gemini_model',deepseek:'deepseek_model',
+ mistral:'mistral_model',groq:'groq_model'};
+const keyField={openai:'openai_api_key',openrouter:'openrouter_api_key',nvidia:'nvidia_api_key',
+ anthropic:'anthropic_api_key',xai:'xai_api_key',gemini:'gemini_api_key',
+ deepseek:'deepseek_api_key',mistral:'mistral_api_key',groq:'groq_api_key'};
+const keyReady={openai:'openai_api_key_ready',openrouter:'openrouter_api_key_ready',nvidia:'nvidia_api_key_ready',
+ anthropic:'anthropic_api_key_ready',xai:'xai_api_key_ready',gemini:'gemini_api_key_ready',
+ deepseek:'deepseek_api_key_ready',mistral:'mistral_api_key_ready',groq:'groq_api_key_ready'};
+const providerLabel={openai:'OpenAI',openrouter:'OpenRouter',nvidia:'NVIDIA',
+ anthropic:'Claude (Anthropic)',xai:'Grok (xAI)',gemini:'Gemini (Google)',
+ deepseek:'DeepSeek',mistral:'Mistral AI',groq:'Groq Cloud'};
+const providerLinks={openai:['https://platform.openai.com/api-keys','https://platform.openai.com/settings/organization/billing/overview'],
+ openrouter:['https://openrouter.ai/settings/keys','https://openrouter.ai/credits'],
+ nvidia:['https://build.nvidia.com/','https://build.nvidia.com/settings'],
+ anthropic:['https://platform.claude.com/settings/keys','https://platform.claude.com/settings/billing'],
+ xai:['https://console.x.ai/','https://console.x.ai/'],
+ gemini:['https://aistudio.google.com/api-keys','https://aistudio.google.com/'],
+ deepseek:['https://platform.deepseek.com/api_keys','https://platform.deepseek.com/usage'],
+ mistral:['https://console.mistral.ai/api-keys','https://console.mistral.ai/'],
+ groq:['https://console.groq.com/keys','https://console.groq.com/settings/billing']};
+let latestCreateSource='';
+let liveSearchItems=[],liveRecommendedItems=[],liveTarget=null,liveSession=null,liveRecommendationLoading=false;
+var $ = id => document.getElementById(id);
+var esc = v => String(v==null?'':v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+var timeText = s => {s=Number(s)||0;return s>=3600?Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'min':Math.floor(s/60)+'min '+Math.floor(s%60)+'s'};
+var toastTimer;
+function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),5500)}
+async function api(url,opts={}){
+ let init={...opts,headers:{'X-Cutshort-Token':csrf,...(opts.headers||{})}};
+ if(opts.json!==undefined){init.body=JSON.stringify(opts.json);init.headers['Content-Type']='application/json';delete init.json}
+ let resp=await fetch(url,init);let data=await resp.json().catch(()=>({error:'Resposta inválida do serviço'}));
+ if(!resp.ok||data.error)throw Error(data.error||'Erro HTTP '+resp.status);
+ return data
+}
+function navigate(name){
+ page=name;document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===name));
+ document.querySelectorAll('.page').forEach(e=>e.classList.toggle('active',e.id==='view-'+name));
+ $('crumb').textContent=({explore:'Explorar vídeos',clips:'Meus cortes',activity:'Atividade',settings:'Integrações',live:'Estúdio ao vivo',trash:'Lixeira'})[name];
+ if(name==='clips')renderClips();if(name==='activity')renderTasks();if(name==='live'){refreshLive();loadRecommendedLives()}if(name==='trash')loadTrash();
+ if(name==='settings' && !loadingModels && !modelCache[$('ai_provider').value])loadModels();
+}
+document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.nav)));
+function liveClock(sec){
+ const value=Math.floor(Number(sec)||0);
+ return String(Math.floor(value/60)).padStart(2,'0')+':'+String(value%60).padStart(2,'0');
+}
+function selectLiveTarget(v,clicked){
+ if(!/^[A-Za-z0-9_-]{11}$/.test(v?.id||''))return;
+ liveTarget=v;
+ $('liveFrame').src='https://www.youtube-nocookie.com/embed/'+v.id+'?autoplay=1&rel=0';
+ $('liveFrame').hidden=false;$('livePlayerEmpty').hidden=true;
+ $('liveOpenYouTube').disabled=false;
+ $('liveClipTitle').value=(v.title||'Corte da live').slice(0,95);
+ document.querySelectorAll('.live-result,.live-suggestion').forEach(x=>x.classList.toggle('chosen',x===clicked));
+ syncLiveButtons();
+}
+function renderLiveRecommendations(items){
+ liveRecommendedItems=items;
+ const host=$('liveRecommendations');
+ host.innerHTML=items.length?items.map((v,i)=>
+  '<button type="button" class="live-suggestion" data-suggestion-index="'+i+'" aria-label="Assistir '+esc(v.title)+'">'+
+  '<span class="live-suggestion-poster"><img loading="lazy" src="'+esc(v.thumbnail)+'" alt=""><span class="on-air-badge">● AO VIVO</span></span>'+
+  '<span class="live-suggestion-body"><strong>'+esc(v.title)+'</strong><small>'+esc(v.channel)+'</small></span></button>').join(''):
+  '<div class="live-empty">Não foram encontradas lives ativas para este tema no momento. Use a busca abaixo ou atualize mais tarde.</div>';
+ host.querySelectorAll('[data-suggestion-index]').forEach(button=>button.onclick=()=>
+   selectLiveTarget(liveRecommendedItems[Number(button.dataset.suggestionIndex)],button));
+}
+async function loadRecommendedLives(refresh=false){
+ if(liveRecommendationLoading)return;
+ liveRecommendationLoading=true;
+ $('liveRecommendRefresh').disabled=true;
+ if(!liveRecommendedItems.length)$('liveRecommendations').innerHTML='<div class="live-empty">Procurando lives realmente ativas no YouTube...</div>';
+ try{
+  const data=await api('/api/live/recommended'+(refresh?'?refresh=1':''));
+  $('liveRecommendContext').textContent='Tema: '+data.topic+' · '+data.basis;
+  renderLiveRecommendations(data.videos||[]);
+ }catch(e){
+  $('liveRecommendContext').textContent='Sugestões temporariamente indisponíveis';
+  if(!liveRecommendedItems.length)$('liveRecommendations').innerHTML='<div class="live-empty">Não foi possível consultar as lives agora: '+esc(e.message)+'</div>';
+ }finally{liveRecommendationLoading=false;$('liveRecommendRefresh').disabled=false}
+}
+$('liveRecommendRefresh').onclick=()=>loadRecommendedLives(true);
+function renderLiveSearch(items){
+ liveSearchItems=items;
+ const host=$('liveResults');
+ host.innerHTML=items.length?items.map((v,i)=>'<button type="button" class="live-result" data-live-index="'+i+'"><img src="'+esc(v.thumbnail)+'" alt=""><span><strong>'+esc(v.title)+'</strong><small><span style="color:#c72f54">● AO VIVO</span> · '+esc(v.channel)+'</small></span></button>').join(''):'<div class="live-empty">Nenhuma live ativa encontrada. Experimente outro assunto.</div>';
+ host.querySelectorAll('[data-live-index]').forEach(btn=>btn.onclick=()=>
+  selectLiveTarget(liveSearchItems[Number(btn.dataset.liveIndex)],btn));
+}
+$('liveSearchBtn').onclick=async()=>{
+ const q=$('liveSearchText').value.trim();
+ if(!q)return toast('Pesquise o assunto da live.');
+ $('liveSearchBtn').disabled=true;$('liveResults').textContent='Buscando transmissões ativas...';
+ try{renderLiveSearch((await api('/api/live/search?q='+encodeURIComponent(q))).videos)}
+ catch(e){$('liveResults').textContent='Falha na busca: '+e.message;toast(e.message)}
+ finally{$('liveSearchBtn').disabled=false}
+};
+$('liveSearchText').onkeydown=e=>{if(e.key==='Enter')$('liveSearchBtn').click()};
+$('liveOpenYouTube').onclick=()=>{if(liveTarget)window.open(liveTarget.url,'_blank','noopener,noreferrer')};
+function syncLiveButtons(){
+ const recording=liveSession&&liveSession.state==='recording';
+ const ready=liveSession&&Number(liveSession.recorded)>0;
+ $('liveStart').disabled=!liveTarget||recording;
+ $('liveStop').disabled=!recording;
+ $('liveMarkIn').disabled=!ready;$('liveMarkOut').disabled=!ready;
+ for(const id of ['liveTimelineIn','liveTimelineOut','liveLast30','liveLast60'])$(id).disabled=!ready;
+ $('liveExport').disabled=!ready;
+ $('liveState').textContent=!liveSession||liveSession.state==='idle'?'● Sem gravação':
+    recording?'● Gravando ao vivo':liveSession.state==='error'?'⚠ Gravação interrompida':'✓ Gravação disponível';
+ $('liveState').className='chip '+(recording?'recording':ready?'good':'');
+ $('liveRecorded').textContent=liveClock(liveSession?.recorded||0)+' gravados';
+ $('liveCaptureNote').textContent=recording?
+   'Captura ativa. Os segmentos são liberados a cada poucos segundos; use IN/OUT dentro do trecho já gravado.':
+   ready?'Sessão pronta para edição; os arquivos permanecem no PC.':'Selecione uma live e inicie gravação local para marcar seus cortes.';
+ updateLiveSelection();
+}
+function updateLiveSelection(){
+ const start=Number($('liveIn').value)||0,end=Number($('liveOut').value)||0;
+ $('liveSelectionDuration').textContent='Trecho: '+Math.max(0,end-start).toFixed(1)+' segundos · disponível até '+liveClock(liveSession?.recorded||0);
+ const recorded=Math.max(0,Number(liveSession?.recorded)||0);
+ const rangeMax=Math.max(.1,recorded);
+ $('liveTimelineEnd').textContent=liveClock(recorded);
+ for(const id of ['liveTimelineIn','liveTimelineOut'])$(id).max=String(rangeMax);
+ $('liveTimelineIn').value=String(Math.min(rangeMax,Math.max(0,start)));
+ $('liveTimelineOut').value=String(Math.min(rangeMax,Math.max(0,end)));
+ $('liveTimelineFill').style.left=(Math.min(1,Math.max(0,start/rangeMax))*100)+'%';
+ $('liveTimelineFill').style.width=(Math.max(0,Math.min(rangeMax,end)-Math.min(rangeMax,start))/rangeMax*100)+'%';
+}
+for(const id of ['liveIn','liveOut'])$(id).oninput=updateLiveSelection;
+$('liveTimelineIn').oninput=()=>{const val=Number($('liveTimelineIn').value)||0;$('liveIn').value=String(Math.min(val,Number($('liveOut').value)||0));updateLiveSelection()};
+$('liveTimelineOut').oninput=()=>{const val=Number($('liveTimelineOut').value)||0;$('liveOut').value=String(Math.max(val,Number($('liveIn').value)||0));updateLiveSelection()};
+function selectLiveRecent(seconds){
+ const end=Math.max(0,Number(liveSession?.recorded)||0);
+ $('liveIn').value=Math.max(0,end-seconds).toFixed(1);
+ $('liveOut').value=end.toFixed(1);
+ updateLiveSelection();
+}
+$('liveLast30').onclick=()=>selectLiveRecent(30);
+$('liveLast60').onclick=()=>selectLiveRecent(60);
+function setLiveMarker(id){
+ const current=Number(liveSession?.recorded)||0;
+ $(id).value=current.toFixed(1);
+ updateLiveSelection();
+}
+$('liveMarkIn').onclick=()=>setLiveMarker('liveIn');
+$('liveMarkOut').onclick=()=>setLiveMarker('liveOut');
+document.addEventListener('keydown',e=>{
+ if(page!=='live'||['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;
+ if(e.key==='['&&!$('liveMarkIn').disabled){e.preventDefault();$('liveMarkIn').click()}
+ if(e.key===']'&&!$('liveMarkOut').disabled){e.preventDefault();$('liveMarkOut').click()}
+});
+async function refreshLive(){
+ try{
+  const data=await api('/api/live/status');
+  liveSession=data.session;
+  const chosen=$('liveArchives').value;
+  $('liveArchives').innerHTML='<option value="">Selecionar uma gravação salva</option>'+data.sessions.map(s=>'<option value="'+esc(s.id)+'">'+esc(s.created)+' · '+esc(s.title)+'</option>').join('');
+  if(data.sessions.some(s=>s.id===chosen))$('liveArchives').value=chosen;
+  syncLiveButtons();
+ }catch(e){$('liveCaptureNote').textContent='Falha ao consultar gravação: '+e.message}
+}
+$('liveStart').onclick=async()=>{
+ if(!liveTarget)return toast('Escolha uma live para gravar.');
+ $('liveStart').disabled=true;toast('Iniciando a captura da live...');
+ try{
+  liveSession=(await api('/api/live/start',{method:'POST',json:{url:liveTarget.url}})).session;
+  $('liveIn').value='0';$('liveOut').value='0';
+  syncLiveButtons();await refreshLive();toast('Gravação iniciada. Os segmentos serão liberados durante a transmissão.');
+ }catch(e){toast('Não foi possível capturar a live: '+e.message);syncLiveButtons()}
+};
+$('liveStop').onclick=async()=>{
+ $('liveStop').disabled=true;
+ try{liveSession=(await api('/api/live/stop',{method:'POST',json:{}})).session;syncLiveButtons();await refreshLive();toast('Gravação finalizada; cortes continuam disponíveis.')}
+ catch(e){toast(e.message);syncLiveButtons()}
+};
+$('liveRestore').onclick=async()=>{
+ const id=$('liveArchives').value;if(!id)return toast('Escolha uma gravação salva.');
+ try{liveSession=(await api('/api/live/restore',{method:'POST',json:{id}})).session;syncLiveButtons();toast('Gravação aberta para edição.')}
+ catch(e){toast(e.message)}
+};
+$('liveExport').onclick=async()=>{
+ if(!liveSession?.id)return toast('Nenhuma gravação selecionada.');
+ const start=Number($('liveIn').value),end=Number($('liveOut').value),recorded=Number(liveSession.recorded);
+ if(!Number.isFinite(start)||!Number.isFinite(end)||start<0||end<=start||end>recorded+.001||end-start>180)return toast('Marque IN e OUT dentro do tempo já gravado (trecho de até 180 segundos).');
+ const title=$('liveClipTitle').value.trim()||'Corte da transmissão ao vivo';
+ $('liveExport').disabled=true;
+ try{
+  await api('/api/live/export',{method:'POST',json:{id:liveSession.id,start,end,title}});
+  toast('Corte em renderização. Acompanhe em Atividade; depois veja Meus cortes.');
+  navigate('activity');refresh();
+ }catch(e){toast(e.message)}
+ finally{$('liveExport').disabled=false}
+};
+setInterval(()=>{if(page==='live')refreshLive()},3000);
+
+function selectSource(v){
+ $('source').value=v.url||'';
+ $('sourcePreview').classList.add('visible');
+ $('selectedThumb').src=v.thumbnail||'';
+ $('selectedTitle').textContent=v.title||'Vídeo selecionado';
+ $('selectedDetails').textContent=(v.channel||'')+' · '+timeText(v.duration);
+ if(v.title)api('/api/topic/selection',{method:'POST',json:{title:v.title}}).catch(()=>{});
+ document.querySelectorAll('.result').forEach(e=>e.classList.toggle('selected',e.dataset.video===v.id));
+}
+let lastSearchVideos=[];
+const fmtViews=n=>Number.isFinite(n)?new Intl.NumberFormat('pt-BR',{notation:'compact',maximumFractionDigits:1}).format(n)+' visualizações':'Visualizações não informadas';
+function renderResults(items){
+ const term=$('titleFilter').value.trim().toLocaleLowerCase('pt-BR');
+ const visible=items.filter(v=>!term||v.title.toLocaleLowerCase('pt-BR').includes(term));
+ $('resultsSummary').textContent=visible.length+' vídeo(s) exibido(s) · títulos publicados/localizados pelo YouTube (sem tradução automática).';
+ const host=$('results');
+ if(!visible.length){host.innerHTML='<div class="empty" style="grid-column:1/-1"><span class="emoji">⌕</span><b>Nenhum vídeo encontrado com esses filtros</b>Altere as palavras ou os filtros e pesquise novamente.</div>';return}
+ host.innerHTML=visible.map((v,i)=>'<div class="result" role="button" tabindex="0" aria-label="Escolher '+esc(v.title)+'" title="'+esc(v.title)+'" data-video="'+esc(v.id)+'" data-i="'+i+'"><img loading="lazy" src="'+esc(v.thumbnail)+'" alt="Miniatura de '+esc(v.title)+'"><div class="result-info"><span class="video-number">VÍDEO '+(i+1)+'</span><strong>'+esc(v.title)+'</strong><small>'+esc(v.channel)+' · '+timeText(v.duration)+'</small><small>'+esc(fmtViews(v.views))+'</small><div class="play-badge">✓ Selecionar para cortar</div></div></div>').join('');
+ host.querySelectorAll('.result').forEach(el=>{
+   const fn=()=>{selectSource(visible[Number(el.dataset.i)]);toast('Vídeo selecionado para cortes.')};
+   el.addEventListener('click',fn);el.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();fn()}})
+ });
+}
+async function search(){
+ const q=$('search').value.trim();if(!q)return toast('Digite algo para pesquisar.');
+ const params=new URLSearchParams({q,sort:$('sortSearch').value,published:$('publishedSearch').value,duration:$('durationSearch').value});
+ $('btnSearch').disabled=true;$('btnSearch').textContent='Buscando...';$('results').innerHTML='<div class="hint">Consultando o YouTube em português...</div>';
+ try{lastSearchVideos=(await api('/api/search?'+params.toString())).videos;renderResults(lastSearchVideos)}
+ catch(e){$('results').innerHTML='';$('resultsSummary').textContent='Busca indisponível.';toast(e.message)}
+ finally{$('btnSearch').disabled=false;$('btnSearch').innerHTML='⌕ &nbsp;Buscar'}
+}
+$('btnSearch').onclick=search;$('search').onkeydown=e=>{if(e.key==='Enter')search()};
+$('titleFilter').oninput=()=>{if(lastSearchVideos.length)renderResults(lastSearchVideos)};
+for(const id of ['sortSearch','publishedSearch','durationSearch'])$(id).onchange=()=>{if($('search').value.trim())search()};
+$('btnInspect').onclick=async()=>{
+ const val=$('source').value.trim();if(!val)return toast('Cole um link de vídeo do YouTube.');
+ if(!/^https?:/i.test(val)){toast('Arquivo local selecionado. Pronto para cortar.');return}
+ try{selectSource((await api('/api/inspect?url='+encodeURIComponent(val))).video)}
+ catch(e){toast(e.message)}
+};
+$('btnImport').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=async ev=>{
+ const f=ev.target.files[0];if(!f)return;
+ if(f.size>2*1024*1024*1024)return toast('O arquivo precisa ter até 2 GB.');
+ $('btnImport').disabled=true;$('btnImport').textContent='Enviando vídeo...';
+ try{
+   const res=await api('/api/import',{method:'POST',body:f,headers:{'X-File-Name':encodeURIComponent(f.name)}});
+   $('source').value=res.source;$('sourcePreview').classList.remove('visible');
+   toast('Vídeo importado: '+f.name+'. Agora clique em Gerar meus cortes.');
+ }catch(e){toast(e.message)}
+ finally{$('btnImport').disabled=false;$('btnImport').textContent='↑ Enviar vídeo do PC';ev.target.value=''}
+};
+// Cada entrada conserva provedor + modelo. Favoritos são persistidos no banco SQLite.
+let createModels=[],createSelection=null,createFavoriteKeys=new Set(),createPickerLoading=false,createPickerError='';
+const createItemKey=(provider,id)=>JSON.stringify([provider,id]);
+const createIsFavorite=item=>createFavoriteKeys.has(createItemKey(item.provider,item.id));
+function createPickerOpen(open){
+ $('createModelPopover').hidden=!open;
+ $('createModelTrigger').setAttribute('aria-expanded',String(open));
+ if(open){$('createModelSearch').focus();$('createModelSearch').select()}
+}
+function createSelectedLabel(){
+ const text=createSelection?.provider==='none'?'Sem IA · cortes básicos':
+   createSelection?createSelection.id+' · '+providerLabel[createSelection.provider]:'Escolher modelo de IA';
+ $('createModelSelected').textContent=text;
+ $('confirmCreate').disabled=createPickerLoading||!createSelection||
+   (createSelection.provider!=='none'&&!settings[keyReady[createSelection.provider]]);
+}
+function renderCreateModels(){
+ const search=$('createModelSearch').value.trim().toLocaleLowerCase('pt-BR');
+ const list=$('createModelOptions');
+ const models=createModels.slice().sort((a,b)=>{
+   const fav=(createIsFavorite(b)?1:0)-(createIsFavorite(a)?1:0);
+   return fav||a.id.localeCompare(b.id,undefined,{sensitivity:'base'})||
+          a.provider.localeCompare(b.provider);
+ }).filter(item=>(item.id+' '+providerLabel[item.provider]).toLocaleLowerCase('pt-BR').includes(search));
+ let section='';
+ let html='';
+ const all=[...models,{provider:'none',id:'Sem IA · cortes básicos'}]
+ .filter(item=>item.provider!=='none'||!search||'sem ia cortes básicos'.includes(search));
+ for(const item of all){
+   const favorite=item.provider!=='none'&&createIsFavorite(item);
+   const tag=item.provider==='none'?'none':favorite?'fav':'other';
+   if(tag!==section){
+     section=tag;
+     html+='<div class="model-picker-section">'+(tag==='fav'?'★ Favoritos':tag==='other'?'Outros modelos':'Modo sem IA')+'</div>';
+   }
+   const idx=item.provider==='none'?-1:createModels.indexOf(item);
+   const selected=createSelection?.id===item.id&&createSelection?.provider===item.provider;
+   html+='<div class="model-picker-row'+(selected?' active':'')+'"><button type="button" class="model-picker-select" data-model-index="'+idx+'"><span class="model-picker-name">'+esc(item.id)+'</span><span class="model-picker-provider">'+(item.provider==='none'?'Processamento sem análise por IA':esc(providerLabel[item.provider]))+'</span></button>'+
+     (item.provider==='none'?'':'<button type="button" data-favorite-index="'+idx+'" class="model-picker-star'+(favorite?' favorited':'')+'" aria-pressed="'+favorite+'" title="'+(favorite?'Remover dos favoritos':'Adicionar aos favoritos')+'" aria-label="'+(favorite?'Remover ':'Adicionar ') + esc(item.id)+(favorite?' dos':' aos')+' favoritos">'+(favorite?'★':'☆')+'</button>')+'</div>';
+ }
+ list.innerHTML=html||'<div class="model-picker-empty">Nenhum modelo encontrado para esta pesquisa.</div>';
+ list.querySelectorAll('[data-model-index]').forEach(btn=>btn.onclick=()=>{
+   const index=Number(btn.dataset.modelIndex);
+   createSelection=index<0?{provider:'none',id:''}:createModels[index];
+   createSelectedLabel();
+   createPickerOpen(false);
+   renderCreateModels();
+   $('createAiInfo').textContent=createSelection.provider==='none'?'Modo sem IA: cortes por legenda ou distribuição automática.':
+     'Selecionado: '+providerLabel[createSelection.provider]+' · '+createSelection.id+'. O uso pode exigir créditos ou ter limites.';
+ });
+ list.querySelectorAll('[data-favorite-index]').forEach(btn=>btn.onclick=async()=>{
+   const item=createModels[Number(btn.dataset.favoriteIndex)];
+   if(!item)return;
+   btn.disabled=true;
+   const favorite=!createIsFavorite(item);
+   try{
+     const result=await api('/api/favorites',{method:'POST',json:{provider:item.provider,model:item.id,favorite}});
+     createFavoriteKeys=new Set(result.favorites.map(x=>createItemKey(x.provider,x.model)));
+     renderCreateModels();
+   }catch(e){btn.disabled=false;toast('Não foi possível salvar favorito: '+e.message)}
+ });
+}
+async function loadCreateModels(){
+ if(createPickerLoading)return;
+ createPickerLoading=true;
+ createSelection=null;createModels=[];createFavoriteKeys=new Set();
+ createPickerError='';
+ $('confirmCreate').disabled=true;
+ $('createModelSelected').textContent='Buscando modelos...';
+ $('createAiInfo').textContent='Carregando modelos disponíveis, sem executar geração de IA.';
+ const readyProviders=providers.filter(p=>settings[keyReady[p]]);
+ const loadFavorites=api('/api/favorites').catch(e=>({favorites:[],error:e.message}));
+ const tasks=readyProviders.map(async p=>{
+   try{
+     const catalog=modelCache[p]||await api('/api/ai/models',{method:'POST',json:{provider:p}});
+     modelCache[p]=catalog;
+     return {provider:p,models:catalog.models||[],error:''};
+   }catch(e){
+     const saved=settings[modelField[p]]||'';
+     return {provider:p,models:saved?[saved]:[],
+       error:providerLabel[p]+': catálogo indisponível'+(saved?' (usando modelo salvo)':'')};
+   }
+ });
+ try{
+   const [favorites, results]=await Promise.all([loadFavorites,Promise.all(tasks)]);
+   createFavoriteKeys=new Set((favorites.favorites||[]).map(x=>createItemKey(x.provider,x.model)));
+   const seen=new Set();
+   for(const item of results){
+     if(item.error)createPickerError+=(createPickerError?' · ':'')+item.error;
+     for(const id of item.models){
+       if(typeof id!=='string')continue;
+       const key=createItemKey(item.provider,id);
+       if(!seen.has(key)){seen.add(key);createModels.push({provider:item.provider,id})}
+     }
+   }
+   const preferred=settings.ai_provider;
+   const sorted=createModels.slice().sort((a,b)=>{
+     const fav=(createIsFavorite(b)?1:0)-(createIsFavorite(a)?1:0);
+     return fav||a.id.localeCompare(b.id);
+   });
+   // Evita selecionar automaticamente um modelo aleatório que possa ter custos.
+   // Primeiro favorito, depois modelo salvo em Integrações; caso contrário exige escolha.
+   createSelection=sorted.find(createIsFavorite)||null;
+   if(!createSelection){
+     const saved=sorted.find(x=>x.provider===preferred&&x.id===settings[modelField[preferred]]);
+     createSelection=saved||(!readyProviders.length?{provider:'none',id:''}:null);
+   }
+   $('createAiInfo').textContent=readyProviders.length?
+     createModels.length+' modelo(s) disponível(is). ★ para favoritar. '+(createPickerError||''):
+     'Nenhuma chave configurada. Use Integrações para adicionar uma; o modo Sem IA continua disponível.';
+ }finally{
+   createPickerLoading=false;
+   createSelectedLabel();
+   renderCreateModels();
+ }
+}
+$('createModelTrigger').onclick=()=>createPickerOpen($('createModelPopover').hidden);
+$('createModelSearch').oninput=renderCreateModels;
+document.addEventListener('click',event=>{
+ if(!$('createModelPopover').hidden&&!$('createModelPicker').contains(event.target))createPickerOpen(false);
+});
+$('createModelSearch').onkeydown=event=>{
+ if(event.key==='Escape'){event.preventDefault();createPickerOpen(false);$('createModelTrigger').focus()}
+};
+$('turboShort').onchange=()=>{
+ const enabled=$('turboShort').checked;
+ $('count').disabled=enabled;
+ $('turboCountHint').hidden=!enabled;
+ $('turboShort').closest('.turbo-option').classList.toggle('enabled',enabled);
+};
+$('btnCreate').onclick=()=>{
+ latestCreateSource=$('source').value.trim();
+ if(!latestCreateSource)return toast('Escolha um vídeo ou cole o link primeiro.');
+ $('createModal').showModal();
+ createPickerOpen(false);
+ $('createModelSearch').value='';
+ loadCreateModels().catch(e=>{createPickerLoading=false;createSelection={provider:'none',id:''};createSelectedLabel();renderCreateModels();$('createAiInfo').textContent='Catálogo indisponível: '+e.message;});
+};
+$('cancelCreate').onclick=()=>$('createModal').close();
+$('confirmCreate').onclick=async()=>{
+ if(createPickerLoading||!createSelection)return toast('Selecione um modelo e aguarde a busca.');
+ const provider=createSelection.provider,model=createSelection.id,autopublish=$('autoPublish').checked;
+ if(provider!=='none'&&!settings[keyReady[provider]])return toast('Configure a chave de '+providerLabel[provider]+' em Integrações.');
+ if(autopublish&&!window.confirm('Confirma gerar e publicar automaticamente em YouTube e Facebook?'))return;
+ $('confirmCreate').disabled=true;
+ try{
+   await api('/api/create',{method:'POST',json:{source:latestCreateSource,
+     count:Number($('count').value),seconds:Number($('seconds').value),
+     autopublish,ai_provider:provider,ai_model:model,turbo:$('turboShort').checked}});
+   $('createModal').close();
+   toast('Cortes iniciados com '+(provider==='none'?'modo básico':providerLabel[provider]+' / '+model)+'.');
+   navigate('activity');await refresh();
+ }catch(e){toast(e.message)}
+ finally{createSelectedLabel()}
+};
+function trashBytes(value){
+ const size=Number(value)||0;
+ if(size>=1024**3)return (size/1024**3).toLocaleString('pt-BR',{maximumFractionDigits:2})+' GB';
+ if(size>=1024**2)return (size/1024**2).toLocaleString('pt-BR',{maximumFractionDigits:1})+' MB';
+ return (size/1024).toLocaleString('pt-BR',{maximumFractionDigits:0})+' KB';
+}
+function trashDate(value){
+ const dt=new Date(value);
+ return Number.isNaN(dt.getTime())?'Data não registrada':dt.toLocaleString('pt-BR');
+}
+async function loadTrash(){
+ if(trashLoading)return;
+ trashLoading=true;
+ $('trashRefresh').disabled=true;
+ try{
+  const data=await api('/api/clips/deleted');
+  deletedClips=data.clips||[];
+  selectedTrash=new Set([...selectedTrash].filter(id=>deletedClips.some(v=>v.id===id&&v.available)));
+  renderTrash();
+ }catch(e){
+  $('trashGrid').innerHTML='<div class="empty" style="grid-column:1/-1"><b>Não foi possível carregar a Lixeira</b>'+esc(e.message)+'</div>';
+  toast('Lixeira: '+e.message);
+ }finally{trashLoading=false;$('trashRefresh').disabled=false}
+}
+function syncTrashSelection(){
+ const qty=selectedTrash.size;
+ const active=deletedClips.filter(x=>x.available);
+ $('trashRestoreSelected').disabled=qty===0;
+ $('trashDeleteSelected').disabled=qty===0;
+ $('trashRestoreSelected').textContent=qty?'↶ Restaurar ('+qty+')':'↶ Restaurar selecionados';
+ $('trashDeleteSelected').textContent=qty?'♻ Excluir permanentemente ('+qty+')':'♻ Excluir permanentemente';
+ $('trashSelectAll').textContent=active.length>0&&qty===active.length?'Limpar seleção':'Selecionar todos';
+ $('trashSelectionInfo').textContent=qty?qty+' vídeo(s) selecionado(s), disponíveis para restauração ou exclusão definitiva.':'Nenhum vídeo selecionado. Selecione arquivos disponíveis para agir.';
+}
+function renderTrash(){
+ const available=deletedClips.filter(x=>x.available);
+ const missing=deletedClips.filter(x=>!x.available);
+ $('trashAvailableCount').textContent=available.length;
+ $('trashMissingCount').textContent=missing.length;
+ $('trashSizeTotal').textContent=trashBytes(available.reduce((sum,x)=>sum+x.bytes,0));
+ const navCount=$('trashNavCount');
+ navCount.textContent=available.length;
+ navCount.hidden=available.length===0;
+ syncTrashSelection();
+ const host=$('trashGrid');
+ if(!deletedClips.length){
+  host.innerHTML='<div class="empty" style="grid-column:1/-1"><span class="emoji">♻</span><b>Lixeira vazia</b>Quando remover cortes de Meus cortes, eles poderão ser recuperados aqui.</div>';
+  return;
+ }
+ host.innerHTML=[...available,...missing].map(item=>{
+  const filename=esc(item.filename),title=esc(item.title),id=item.id;
+  const preview=item.available?'<video controls playsinline preload="metadata" src="/trash-media/'+id+'"></video>':
+     '<div class="trash-no-video"><span class="trash-missing-icon">◌</span>Arquivo de vídeo não localizado</div>';
+  const controls=item.available?
+     '<label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700"><input class="trash-check" data-id="'+id+'" type="checkbox" '+(selectedTrash.has(id)?'checked':'')+'> Selecionar</label><div class="actions"><button class="secondary small" data-restore-trash="'+id+'">↶ Restaurar</button><button class="secondary danger small" data-purge-trash="'+id+'">Excluir definitivamente</button></div>':
+     '<span class="chip bad">Registro antigo sem MP4 — nenhuma ação disponível</span>';
+  return '<article class="trash-card '+(item.available?'':'missing')+'">'+preview+'<div class="clip-body"><h3 title="'+title+'">'+title+'</h3>'+
+   '<div class="trash-card-meta">Removido: '+esc(trashDate(item.removed))+' · '+timeText(item.duration)+
+   (item.available?' · '+trashBytes(item.bytes):' · Arquivo ausente')+'</div>'+
+   '<div class="trash-file" title="'+filename+'">Arquivo: '+filename+'</div>'+
+   '<div class="clip-footer">'+controls+'</div></div></article>';
+ }).join('');
+ host.querySelectorAll('.trash-check').forEach(el=>el.onchange=()=>{
+  el.checked?selectedTrash.add(el.dataset.id):selectedTrash.delete(el.dataset.id);
+  syncTrashSelection();
+ });
+ host.querySelectorAll('[data-restore-trash]').forEach(el=>el.onclick=()=>restoreTrash([el.dataset.restoreTrash]));
+ host.querySelectorAll('[data-purge-trash]').forEach(el=>el.onclick=()=>purgeTrash([el.dataset.purgeTrash]));
+}
+$('openTrash').onclick=()=>navigate('trash');
+$('trashRefresh').onclick=loadTrash;
+$('trashSelectAll').onclick=()=>{
+ const active=deletedClips.filter(x=>x.available);
+ if(selectedTrash.size===active.length)selectedTrash.clear();
+ else selectedTrash=new Set(active.map(x=>x.id));
+ renderTrash();
+};
+$('trashRestoreSelected').onclick=()=>restoreTrash([...selectedTrash]);
+$('trashDeleteSelected').onclick=()=>purgeTrash([...selectedTrash]);
+async function restoreTrash(ids){
+ if(!ids.length)return toast('Selecione um vídeo para restaurar.');
+ const matches=deletedClips.filter(v=>ids.includes(v.id)&&v.available);
+ if(matches.length!==ids.length)return toast('Seleção inválida ou arquivo ausente. Atualize a lixeira.');
+ if(!window.confirm('Restaurar '+ids.length+' vídeo(s) para Meus cortes?'))return;
+ $('trashRestoreSelected').disabled=true;
+ try{
+  const result=await api('/api/clips/restore',{method:'POST',json:{ids}});
+  ids.forEach(id=>selectedTrash.delete(id));
+  lastRemoved=lastRemoved.filter(id=>!ids.includes(id));
+  $('undoDelete').hidden=lastRemoved.length===0;
+  lastClipsHash='';
+  await refresh();
+  await loadTrash();
+  toast(result.restored+' vídeo(s) restaurado(s) para Meus cortes.');
+ }catch(e){toast('Falha ao restaurar: '+e.message);await loadTrash()}
+ finally{syncTrashSelection()}
+}
+async function purgeTrash(ids){
+ if(!ids.length)return toast('Selecione um vídeo na lixeira.');
+ const matches=deletedClips.filter(v=>ids.includes(v.id)&&v.available);
+ if(matches.length!==ids.length)return toast('Seleção inválida ou vídeo ausente. Atualize a lixeira.');
+ const preview=matches.slice(0,3).map(x=>'• '+x.title).join('\n');
+ const answer=window.prompt('ATENÇÃO: excluir PERMANENTEMENTE '+ids.length+' arquivo(s) da pasta data/lixeira?\n\n'+
+    preview+'\n\nEsta operação NÃO tem Desfazer. Não remove vídeos publicados online e pode haver cópias em backups.\n\nDigite EXCLUIR para confirmar:');
+ if(answer!=='EXCLUIR')return toast('Exclusão permanente cancelada.');
+ // Solta arquivos em reprodução antes de tentar excluir no Windows.
+ document.querySelectorAll('#trashGrid video').forEach(v=>{v.pause();v.removeAttribute('src');v.load()});
+ $('trashDeleteSelected').disabled=true;
+ try{
+  const result=await api('/api/clips/purge',{method:'POST',json:{ids,confirm:'EXCLUIR PERMANENTEMENTE'}});
+  ids.forEach(id=>selectedTrash.delete(id));
+  lastRemoved=lastRemoved.filter(id=>!ids.includes(id));
+  $('undoDelete').hidden=lastRemoved.length===0;
+  await loadTrash();
+  if(result.pending_cleanup)toast('Registro removido, mas '+result.pending_cleanup+' arquivo(s) precisam de limpeza manual. Verifique o registro do servidor.');
+  else toast(result.deleted+' arquivo(s) excluído(s) definitivamente da lixeira.');
+ }catch(e){toast('Falha ao excluir: '+e.message);await loadTrash()}
+ finally{syncTrashSelection()}
+}
+
+function clipStatus(clip,p){
+ const info=clip.publications[p];if(!info)return '';
+ let cls=info.state==='erro'?'bad':info.state==='processando'?'warn':'good';
+ let lab=info.state==='erro'?'Falha no envio':info.state==='processando'?'Processando':'Enviado';
+ return '<span class="chip '+cls+'">'+(p==='youtube'?'▶ YouTube':'f Facebook')+' · '+lab+'</span>';
+}
+function renderClips(){
+ syncClipSelection();
+ $('statClips').textContent=clips.length;
+ $('statYT').textContent=clips.filter(c=>c.publications.youtube&&c.publications.youtube.state!=='erro').length;
+ $('statFB').textContent=clips.filter(c=>c.publications.facebook&&c.publications.facebook.state!=='erro').length;
+ let host=$('clips');
+ if(!clips.length){host.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="emoji">▣</div><b>Seus cortes vão aparecer aqui</b>Pesquise um vídeo e clique em Gerar meus cortes.</div>';return}
+ host.innerHTML=clips.map(c=>'<article class="clip"><video controls preload="metadata" playsinline src="/media/'+c.id+'"></video><div class="clip-body"><h3 title="'+esc(c.title)+'">'+esc(c.title)+'</h3><div class="clip-meta"><span>'+timeText(c.duration)+'</span><span>·</span><span>'+esc(c.method)+'</span></div><p class="hint" title="'+esc(c.filename||'')+'" style="margin:0 0 6px;overflow-wrap:anywhere">Arquivo: '+esc(c.filename||'MP4')+'</p><p class="hint" style="margin:0 0 11px;overflow-wrap:anywhere">Modelo: <strong>'+esc(c.model_used||'Não registrado')+'</strong></p><div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">'+clipStatus(c,'youtube')+clipStatus(c,'facebook')+'</div><div class="clip-footer"><label style="display:flex;gap:8px;align-items:center;font-weight:700;font-size:12px"><input class="clip-check" data-id="'+c.id+'" type="checkbox" '+(selected.has(c.id)?'checked':'')+'>Selecionar</label><div class="actions"><a class="helper-link" style="margin:0" href="/download/'+c.id+'" download>Baixar MP4</a><button class="secondary small" data-publish="'+c.id+'">Publicar</button><button class="secondary small danger" data-delete="'+c.id+'">Remover</button></div></div></div></article>').join('');
+ host.querySelectorAll('.clip-check').forEach(el=>el.onchange=()=>{el.checked?selected.add(el.dataset.id):selected.delete(el.dataset.id);syncClipSelection()});
+ host.querySelectorAll('[data-publish]').forEach(el=>el.onclick=()=>openPublish([el.dataset.publish]));
+ host.querySelectorAll('[data-delete]').forEach(el=>el.onclick=()=>removeClips([el.dataset.delete]));
+}
+$('selectAll').onclick=()=>{
+ if(selected.size===clips.length){selected.clear();$('selectAll').textContent='Selecionar todos'}
+ else{clips.forEach(c=>selected.add(c.id));$('selectAll').textContent='Limpar seleção'}
+ renderClips();
+};
+function syncClipSelection(){
+ const n=selected.size;
+ $('deleteSelected').disabled=n===0;
+ $('publishSelected').disabled=n===0;
+ $('deleteSelected').textContent=n?'Remover selecionados ('+n+')':'Remover selecionados';
+ $('selectAll').textContent=clips.length>0&&n===clips.length?'Limpar seleção':'Selecionar todos';
+ $('clipsSelectionInfo').textContent=n?n+' corte(s) selecionado(s). Remover envia os MP4 para a lixeira local, sem excluir posts no YouTube/Facebook.':
+  'Nenhum corte selecionado. Remover envia para a lixeira local, sem excluir publicações online.';
+}
+async function removeClips(ids){
+ if(!ids.length)return toast('Marque ao menos um corte para remover.');
+ const targets=clips.filter(c=>ids.includes(c.id));
+ if(targets.length!==ids.length)return toast('Atualize a biblioteca e tente novamente.');
+ const sample=targets.slice(0,2).map(c=>c.title).join(' / ');
+ const question='Remover '+ids.length+' corte(s) da biblioteca e da pasta cortes?\n\n'+sample+
+   '\n\nOs MP4 serão movidos para CutShortPlus/data/lixeira e poderão ser restaurados. Vídeos já publicados online não serão excluídos.';
+ if(!window.confirm(question))return;
+ $('deleteSelected').disabled=true;
+ try{
+   const result=await api('/api/clips/trash',{method:'POST',json:{ids}});
+   lastRemoved=result.ids||ids;
+   selected=new Set([...selected].filter(id=>!ids.includes(id)));
+   $('undoDelete').hidden=false;
+   $('undoDelete').textContent='↶ Desfazer remoção ('+lastRemoved.length+')';
+   lastClipsHash='';
+   await refresh();
+   toast(result.removed+' corte(s) removido(s). Use Desfazer remoção para restaurar.');
+ }catch(e){toast('Falha ao remover: '+e.message);syncClipSelection()}
+}
+$('deleteSelected').onclick=()=>removeClips([...selected]);
+$('undoDelete').onclick=async()=>{
+ if(!lastRemoved.length)return;
+ $('undoDelete').disabled=true;
+ try{
+   const result=await api('/api/clips/restore',{method:'POST',json:{ids:lastRemoved}});
+   lastRemoved=[];
+   $('undoDelete').hidden=true;
+   lastClipsHash='';
+   await refresh();
+   toast(result.restored+' corte(s) restaurado(s).');
+ }catch(e){toast('Falha ao restaurar: '+e.message)}
+ finally{$('undoDelete').disabled=false}
+};
+$('publishSelected').onclick=()=>openPublish([...selected]);
+function openPublish(ids){
+ if(!ids.length)return toast('Selecione ao menos um corte.');
+ pendingPublish=ids;$('pubCount').textContent=ids.length+' corte(s) selecionado(s).';
+ $('pubPrivacy').value=settings.privacy||'private';
+ $('publishModal').showModal();
+}
+$('cancelPublish').onclick=()=>$('publishModal').close();
+$('confirmPublish').onclick=async()=>{
+ let platforms=[];if($('pubYT').checked)platforms.push('youtube');if($('pubFB').checked)platforms.push('facebook');
+ if(!platforms.length)return toast('Escolha uma plataforma.');
+ if(platforms.includes('youtube')&&!settings.youtube_oauth_ready)return toast('Conecte o YouTube em Integrações antes de publicar.');
+ if(platforms.includes('facebook')&&!(settings.meta_page_token_ready&&settings.meta_page_id))return toast('Configure a Página Facebook em Integrações.');
+ $('confirmPublish').disabled=true;
+ try{
+   await api('/api/publish',{method:'POST',json:{ids:pendingPublish,platforms,privacy:$('pubPrivacy').value}});
+   $('publishModal').close();toast('Envio iniciado. Acompanhe o resultado em Atividade.');navigate('activity');refresh();
+ }catch(e){toast(e.message)}finally{$('confirmPublish').disabled=false}
+};
+function renderTasks(){
+ if(!latestTasks.length){$('tasks').innerHTML='<div class="empty"><span class="emoji">◴</span><b>Nenhuma tarefa por enquanto</b>Suas atividades aparecerão aqui.</div>';return}
+ let names={cut:'Criação de Shorts',publish:'Publicação de cortes',oauth:'Conexão com YouTube'};
+ $('tasks').innerHTML=latestTasks.map(t=>'<div class="task"><div class="task-top"><strong>'+esc(names[t.type]||t.type)+'</strong><span class="chip '+(t.status==='done'?'good':t.status==='error'?'bad':'warn')+'">'+(t.status==='done'?'Concluído':t.status==='error'?'Erro':'Em andamento')+'</span></div><p>'+esc(t.message)+'</p><div class="progress"><span style="width:'+Math.max(0,Math.min(100,t.progress))+'%"></span></div></div>').join('');
+}
+function fillModelSelect(select,ids,preferred){
+ select.replaceChildren();
+ for(const id of ids){
+   const opt=document.createElement('option');opt.value=id;opt.textContent=id;
+   select.appendChild(opt);
+ }
+ if(preferred&&ids.includes(preferred))select.value=preferred;
+ select.disabled=!ids.length;
+ if(!ids.length){
+   const opt=document.createElement('option');opt.value='';opt.textContent='Nenhum modelo encontrado';
+   select.appendChild(opt);
+ }
+}
+function displayAIState(){
+ const p=$('ai_provider').value, ready=!!settings[keyReady[p]];
+ const pending=!!$('ai_api_key').value.trim();
+ $('aiState').textContent=ready?'✓ Chave salva ('+providerLabel[p]+')':'Não configurada';
+ $('aiState').className='chip '+(ready?'good':'');
+ $('aiKeyInfo').textContent=pending?'Chave nova digitada. Clique Buscar modelos e Salvar integrações.':
+   ready?'✓ Chave de '+providerLabel[p]+' salva e protegida. Campo vazio é normal.':
+   'Configure sua chave '+providerLabel[p]+' e depois busque modelos.';
+ $('ai_api_key').placeholder=ready?'Chave salva •••••••• (digite apenas para substituir)':'Cole sua API Key de '+providerLabel[p];
+}
+function fillSettings(s){
+ settings=s;
+ for(const f of ['yt_client_file','meta_page_id','privacy'])if(s[f]!==undefined)$(f).value=s[f];
+ $('ai_provider').value=providers.includes(s.ai_provider)?s.ai_provider:'openai';
+ $('ytState').textContent=s.youtube_oauth_ready?'✓ Conectado':'Não conectado';
+ $('ytState').className='chip '+(s.youtube_oauth_ready?'good':'');
+ $('fbState').textContent=s.meta_page_token_ready&&s.meta_page_id?'✓ Configurado':'Não conectado';
+ $('fbState').className='chip '+(s.meta_page_token_ready&&s.meta_page_id?'good':'');
+ showProvider();
+}
+function showProvider(){
+ const p=$('ai_provider').value, entry=modelCache[p], saved=settings[modelField[p]];
+ $('ai_api_key').value='';
+ $('aiKeyLink').href=providerLinks[p][0];$('aiCreditsLink').href=providerLinks[p][1];
+ $('nvidiaModelBox').style.display=p==='nvidia'?'block':'none';
+ $('manualModelBox').style.display=p==='nvidia'?'block':'none';
+ $('otherProviderNote').style.display=p==='nvidia'?'none':'block';
+ $('manualModel').value=''; // Entrada manual opcional; não substituir seleção do catálogo.
+ if(entry)fillModelSelect($('model'),entry.models,saved||entry.recommended);
+ else if(saved){fillModelSelect($('model'),[saved],saved);$('model').disabled=true}
+ else{fillModelSelect($('model'),[],'')}
+ $('otherProviderNote').textContent='Escolha o modelo na janela Gerar Shorts. Use Consultar catálogo para verificar os modelos desta API.';
+ $('aiModelsInfo').textContent=p==='nvidia'?
+  'A NVIDIA não identifica gratuidade por modelo; o uso depende dos créditos de avaliação da sua conta.':
+  'Modelos serão escolhidos ao gerar o Short. Disponibilidade e custos dependem da API.';
+ displayAIState();
+}
+$('ai_provider').onchange=()=>{
+ modelsLoaded=false;aiApiValidated=false;showProvider();
+ const p=$('ai_provider').value;
+ if(settings[keyReady[p]]&&!modelCache[p])loadModels();
+};
+$('ai_api_key').addEventListener('input',()=>{
+ modelsLoaded=false;aiApiValidated=false;
+ delete modelCache[$('ai_provider').value];displayAIState();
+});
+async function loadModels(){
+ if(loadingModels)return false;
+ const p=$('ai_provider').value,candidate=$('ai_api_key').value.trim();
+ if(!candidate&&!settings[keyReady[p]]&&!['openrouter','nvidia'].includes(p)){
+   $('aiModelsInfo').textContent='Insira a chave de '+providerLabel[p]+' para consultar o catálogo.';return false;
+ }
+ loadingModels=true;$('btnLoadModels').disabled=true;$('btnLoadModels').textContent='Buscando...';
+ $('aiModelsInfo').textContent='Consultando '+providerLabel[p]+'...';
+ try{
+   const data=await api('/api/ai/models',{method:'POST',json:{provider:p,api_key:candidate}});
+   if(p!==$('ai_provider').value)return false;
+   modelCache[p]=data;
+   const saved=settings[modelField[p]]||'',previous=$('model').value||saved;
+   const preferred=data.models.includes(previous)?previous:data.recommended;
+   fillModelSelect($('model'),data.models,preferred);
+   aiApiValidated=p==='openai';modelsLoaded=true;displayAIState();
+   if(p!=='nvidia')$('otherProviderNote').textContent=data.count+' modelo(s) no catálogo de '+providerLabel[p]+'. A escolha final fica em Gerar Shorts.';
+   $('aiModelsInfo').textContent=(p==='openai'?'✓ API validada · ':'Catálogo público · ')+data.count+' modelos para '+providerLabel[p]+'. '+
+     (p==='openrouter'?'Somente opções :free, sujeitas a limites.':
+      p==='nvidia'?'NVIDIA Build pode exigir créditos de avaliação; teste a chave e a geração.':
+      'Modelos podem exigir créditos para uso.')+' Salve o modelo escolhido.';
+   return true;
+ }catch(e){
+   if(p!==$('ai_provider').value)return false;
+   $('aiModelsInfo').textContent='Não foi possível carregar: '+e.message;
+   if(p!=='nvidia')$('otherProviderNote').textContent='Não foi possível consultar o catálogo: '+e.message;
+   if(p==='nvidia')$('manualModelBox').style.display='block';
+   toast(e.message);return false;
+ }finally{loadingModels=false;$('btnLoadModels').disabled=false;$('btnLoadModels').textContent='↻ Consultar catálogo'}
+}
+$('btnLoadModels').onclick=loadModels;
+$('btnTestAI').onclick=async()=>{
+ const p=$('ai_provider').value;
+ const model=(p==='nvidia'&&$('manualModel').value.trim())?
+   $('manualModel').value.trim():
+   (p==='nvidia'?$('model').value:
+     (settings[modelField[p]]||modelCache[p]?.recommended||modelCache[p]?.models?.[0]||''));
+ if(!model)return toast('Consulte o catálogo e salve a chave antes do teste, ou escolha o modelo na geração.');
+ if(!window.confirm('Executar teste real com '+providerLabel[p]+' / '+model+'? Pode consumir créditos.'))return;
+ $('btnTestAI').disabled=true;$('btnTestAI').textContent='Testando...';
+ try{
+   const x=await api('/api/ai/test',{method:'POST',json:{provider:p,model,api_key:$('ai_api_key').value.trim()}});
+   $('aiModelsInfo').textContent='✓ '+x.message;toast('Geração testada com '+providerLabel[p]+'.');
+ }catch(e){$('aiModelsInfo').textContent='⚠ '+e.message;toast(e.message)}
+ finally{$('btnTestAI').disabled=false;$('btnTestAI').textContent='✓ Testar geração'}
+};
+async function saveSettings(){
+ const p=$('ai_provider').value;
+ const payload={ai_provider:p};
+ for(const f of ['yt_client_file','youtube_api_key','meta_page_id','meta_page_token','privacy'])payload[f]=$(f).value.trim();
+ const key=$('ai_api_key').value.trim();
+ if(key)payload[keyField[p]]=key;
+ const selected=p==='nvidia'?
+   ($('manualModel').value.trim()||$('model').value):'';
+ if(selected)payload[modelField[p]]=selected;
+ const r=await api('/api/settings',{method:'POST',json:payload});
+ $('ai_api_key').value='';
+ for(const f of ['youtube_api_key','meta_page_token'])$(f).value='';
+ fillSettings(r.settings);
+ if(r.settings[keyReady[p]]&&!modelCache[p])await loadModels();
+ return r;
+}
+$('btnSave').onclick=async()=>{
+ try{await saveSettings();toast('Credenciais e seleção de IA salvas com segurança.')}
+ catch(e){toast(e.message)}
+};
+$('btnYtConnect').onclick=async()=>{
+ try{await saveSettings();await api('/api/oauth/youtube',{method:'POST',json:{}});toast('Abra a janela do Google para autorizar o canal.');navigate('activity');refresh()}
+ catch(e){toast(e.message)}
+};
+$('btnFbTest').onclick=async()=>{
+ try{await saveSettings();let r=await api('/api/test/facebook',{method:'POST',json:{}});toast('Facebook conectado à Página: '+r.page)}
+ catch(e){toast(e.message)}
+};
+$('refreshTasks').onclick=refresh;
+$('clearActivities').onclick=async()=>{
+ const eligible=latestTasks.filter(t=>t.status==='done'||t.status==='error').length;
+ if(!eligible)return toast('Não existem atividades finalizadas para limpar.');
+ if(!window.confirm('Limpar o histórico das tarefas concluídas e com erro?\n\nSeus Shorts, gravações, publicações e tarefas em andamento serão mantidos.'))return;
+ $('clearActivities').disabled=true;
+ try{
+  const result=await api('/api/activities/clear',{method:'POST',json:{confirm:'LIMPAR ATIVIDADES'}});
+  lastTasksHash='';latestTasks=[];
+  await refresh();
+  toast(result.cleared+' atividades removidas do histórico. Nenhum vídeo foi apagado.');
+ }catch(e){toast('Falha ao limpar atividades: '+e.message)}
+ finally{$('clearActivities').disabled=false}
+};
+let lastClipsHash='',lastTasksHash='';
+async function refresh(){
+ try{
+  const r=await api('/api/status');
+  let ch=JSON.stringify(r.clips);if(ch!==lastClipsHash){lastClipsHash=ch;clips=r.clips;selected=new Set([...selected].filter(id=>clips.some(c=>c.id===id)));if(page==='clips')renderClips()}
+  let th=JSON.stringify(r.tasks);if(th!==lastTasksHash){lastTasksHash=th;latestTasks=r.tasks;if(page==='activity')renderTasks()}
+  settings={...settings,...r.settings};
+  $('toolsLabel').textContent=r.dependencies.ffmpeg&&r.dependencies.ytdlp?'● Ferramentas prontas':'⚠ Dependências ausentes';
+  $('healthDot').style.background=r.dependencies.ffmpeg&&r.dependencies.ytdlp?'#5bd6a1':'#e4bd71';
+  if(page==='settings') {
+    $('ytState').textContent=settings.youtube_oauth_ready?'✓ Conectado':'Não conectado';
+    $('ytState').className='chip '+(settings.youtube_oauth_ready?'good':'');
+    displayAIState();
+  }
+ }catch(e){$('toolsLabel').textContent='⚠ Serviço indisponível'}
+}
+function applyTheme(theme){
+ const dark=theme==='dark';
+ document.documentElement.dataset.theme=dark?'dark':'light';
+ $('themeToggle').setAttribute('aria-pressed',String(dark));
+ $('themeIcon').textContent=dark?'☀':'◐';
+ $('themeLabel').textContent=dark?'Light Theme':'Dark Theme';
+ try{localStorage.setItem('cutshort-theme',dark?'dark':'light')}catch(_){}
+}
+$('themeToggle').onclick=()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+try{applyTheme(localStorage.getItem('cutshort-theme')==='dark'?'dark':'light')}
+catch(_){applyTheme('light')}
+(async()=>{
+ try{const b=await api('/api/bootstrap');csrf=b.token;fillSettings(b.settings);await refresh();setInterval(refresh,4000)}
+ catch(e){toast('Falha ao iniciar painel: '+e.message)}
+})();
+</script></body></html>
