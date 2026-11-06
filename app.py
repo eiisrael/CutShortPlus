@@ -25,6 +25,7 @@ import highlight_engine
 import topic_interest
 import clip_titles
 import asr_local
+import sendoka_plugin
 from urllib.parse import parse_qs, quote, unquote, urlparse
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 
@@ -46,11 +47,12 @@ DEFAULTS = {"model": "", "max_clips": 10, "seconds": 60,
             "privacy": "private", "meta_page_id": "", "yt_client_file": "",
             "ai_provider": "openai", "openrouter_model": "", "nvidia_model": "",
             "anthropic_model": "", "xai_model": "", "gemini_model": "",
-            "deepseek_model": "", "mistral_model": "", "groq_model": ""}
+            "deepseek_model": "", "mistral_model": "", "groq_model": "",
+            "sendoka_sender": ""}
 SECRET_FIELDS = ("youtube_api_key", "openai_api_key", "meta_page_token",
                  "openrouter_api_key", "nvidia_api_key", "anthropic_api_key",
                  "xai_api_key", "gemini_api_key", "deepseek_api_key",
-                 "mistral_api_key", "groq_api_key")
+                 "mistral_api_key", "groq_api_key", "sendoka_api_key")
 AI_PROVIDERS = {"openai": ("openai_api_key", "model"),
                 "openrouter": ("openrouter_api_key", "openrouter_model"),
                 "nvidia": ("nvidia_api_key", "nvidia_model"),
@@ -109,12 +111,13 @@ def read_settings():
 
 def write_settings(payload):
     current = read_settings()
-    for key in ("ai_provider","privacy","yt_client_file","meta_page_id",
+    for key in ("ai_provider","privacy","yt_client_file","meta_page_id","sendoka_sender",
                 *(name for _,name in AI_PROVIDERS.values())):
         if key in payload:
             current[key] = str(payload[key]).strip()[:400]
     for key, minimum, maximum in (("max_clips", 1, 10), ("seconds", 12, 60)):
         if key in payload: current[key] = max(minimum, min(maximum, int(payload[key])))
+    if current.get("sendoka_sender"): sendoka_plugin.valid_sender(current["sendoka_sender"])
     if current["privacy"] not in ("private", "unlisted", "public"): raise ValueError("Privacidade inválida")
     if current["ai_provider"] not in AI_PROVIDERS: raise ValueError("Provedor de IA inválido")
     for _, field in AI_PROVIDERS.values():
@@ -153,6 +156,9 @@ def public_settings(config=None):
        **{key + "_ready": bool(config.get(key))
           for provider,(key,_) in AI_PROVIDERS.items()
           if provider not in ("openai","openrouter","nvidia")},
+       "sendoka_api_key_ready": bool(config.get("sendoka_api_key")),
+       "sendoka_mode": ("test" if str(config.get("sendoka_api_key", "")).startswith("sok_test_") else
+                        "live" if str(config.get("sendoka_api_key", "")).startswith("sok_live_") else "unconfigured"),
        "meta_page_token_ready": bool(config.get("meta_page_token")),
        "youtube_oauth_ready": TOKEN_FILE.exists()}
 
@@ -1249,6 +1255,17 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_header("Content-Length", str(len(data)))
                 self.end_headers()
                 self.wfile.write(data)
+            elif path in ("/favicon.ico", "/assets/cutshortplus.png"):
+                # Rotas de assets estáticos explícitas, sem servir arquivos arbitrários.
+                filename = "cutshortplus.ico" if path == "/favicon.ico" else "cutshortplus.png"
+                media = (ROOT / "assets" / filename).read_bytes()
+                self.send_response(200)
+                self.send_header("Content-Type", "image/x-icon" if filename.endswith(".ico") else "image/png")
+                self.send_header("Content-Length", str(len(media)))
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("X-Content-Type-Options", "nosniff")
+                self.end_headers()
+                self.wfile.write(media)
             elif path == "/api/bootstrap":
                 self.send_json({"token": CSRF, "settings": public_settings(),
                                 "dependencies": dependency_status()})
@@ -1335,6 +1352,24 @@ class Handler(BaseHTTPRequestHandler):
             path = urlparse(self.path).path
             if path == "/api/settings":
                 self.send_json({"settings": write_settings(self.get_json())})
+            elif path == "/api/sendoka/sms":
+                data = self.get_json()
+                if data.get("confirm") != "ENVIAR SMS":
+                    raise ValueError("Confirmacao obrigatoria.")
+                cfg = read_settings()
+                self.send_json(sendoka_plugin.send_sms(cfg.get("sendoka_api_key", ""),
+                    cfg.get("sendoka_sender", ""), data.get("to", ""), data.get("body", "")))
+            elif path == "/api/sendoka/verify/start":
+                data = self.get_json()
+                if data.get("confirm") != "ENVIAR OTP":
+                    raise ValueError("Confirmacao obrigatoria.")
+                cfg = read_settings()
+                self.send_json(sendoka_plugin.start_verification(cfg.get("sendoka_api_key", ""),
+                    cfg.get("sendoka_sender", ""), data.get("to", "")))
+            elif path == "/api/sendoka/verify/check":
+                data = self.get_json()
+                self.send_json(sendoka_plugin.check_verification(read_settings().get("sendoka_api_key", ""),
+                    data.get("id", ""), data.get("code", "")))
             elif path == "/api/clips/trash":
                 self.send_json(trash_clips(self.get_json().get("ids")))
             elif path == "/api/clips/restore":

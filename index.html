@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CutShortPlus • Estúdio de cortes</title>
+<link rel="icon" type="image/png" sizes="256x256" href="/assets/cutshortplus.png?v=1">
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1">
+<link rel="apple-touch-icon" href="/assets/cutshortplus.png?v=1">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
 :root{--ink:#162439;--muted:#8290a2;--line:#e4eaf1;--blue:#5067ef;--soft:#f6f8fc;--white:#fff;--green:#12896b;--red:#d24d5f}
@@ -229,10 +232,17 @@ to{filter:drop-shadow(0 0 12px #ffb21f) drop-shadow(0 0 5px #ff2727);transform:s
  .live-recommend-outer .live-recommend-grid{grid-template-columns:1fr;max-height:425px}
 }
 
+/* Marca CutShortPlus: mantém o mesmo ícone em temas claro/escuro. */
+.brand-mark.brand-mark-image,
+html[data-theme="light"] .brand-mark.brand-mark-image,
+html[data-theme="dark"] .brand-mark.brand-mark-image{
+ background:transparent;box-shadow:none;padding:0;overflow:hidden;border-radius:10px}
+.brand-mark.brand-mark-image img{display:block;width:100%;height:100%;object-fit:contain}
+.button-brand-image{display:inline-block;width:20px;height:20px;vertical-align:middle;margin-right:8px;object-fit:contain;border-radius:5px}
 </style></head><body>
 <div class="shell">
 <aside class="sidebar">
-<div class="brand"><div class="brand-mark">✦</div><div><div class="brand-name">CutShort<span>+</span></div><div class="brand-small">CREATOR STUDIO</div></div></div>
+<div class="brand"><div class="brand-mark brand-mark-image"><img src="/assets/cutshortplus.png" alt="Ícone do CutShortPlus" width="38" height="38"></div><div><div class="brand-name">CutShort<span>+</span></div><div class="brand-small">CREATOR STUDIO</div></div></div>
 <nav class="nav" aria-label="Navegação">
 <button class="active" data-nav="explore"><span class="symbol">⌕</span><span class="nav-text">Explorar vídeos</span></button>
 <button data-nav="live"><span class="symbol">◉</span><span class="nav-text">Estúdio ao vivo</span></button>
@@ -275,7 +285,7 @@ to{filter:drop-shadow(0 0 12px #ffb21f) drop-shadow(0 0 5px #ff2727);transform:s
  <small id="turboCountHint" class="turbo-caption" hidden>⚡ O Turbo calcula automaticamente os cortes usando a duração escolhida, sem sobrepor trechos. Limite de segurança: 60 Shorts por operação.</small>
 </div>
 <label style="display:flex;align-items:flex-start;gap:9px;margin-top:17px;line-height:1.5;color:#50617b;font-size:12px"><input type="checkbox" id="autoPublish" style="margin-top:2px;accent-color:#5067ef">Publicar automaticamente no YouTube e na Página do Facebook após criar. O Facebook ficará público; o YouTube seguirá a privacidade configurada.</label>
-<button class="primary" id="btnCreate" style="width:100%;margin-top:17px;padding:15px">✦ &nbsp;Gerar meus cortes</button>
+<button class="primary" id="btnCreate" style="width:100%;margin-top:17px;padding:15px"><img class="button-brand-image" src="/assets/cutshortplus.png" width="20" height="20" alt="" aria-hidden="true">Gerar meus cortes</button>
 <p class="hint" style="text-align:center;margin:14px 0 0">Sem marcar a opção, você poderá revisar tudo antes do envio.</p>
 </div></div>
 </section>
@@ -376,6 +386,18 @@ to{filter:drop-shadow(0 0 12px #ffb21f) drop-shadow(0 0 5px #ff2727);transform:s
 <div class="field" id="manualModelBox" style="display:none"><label for="manualModel">ID DE MODELO NVIDIA (CASO A LISTA NÃO ESTEJA DISPONÍVEL)</label><input id="manualModel" type="text" placeholder="Ex.: meta/llama-3.1-8b-instruct"></div>
 <p class="hint" id="otherProviderNote" style="margin:7px 0 13px">O modelo será escolhido na janela de criação de Shorts, com opção de favoritar ★.</p>
 <div class="actions"><button class="secondary small" id="btnLoadModels">↻ Consultar catálogo</button><button class="secondary small" id="btnTestAI">✓ Testar geração</button><a class="helper-link" id="aiKeyLink" href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">Criar chave ↗</a><a class="helper-link" id="aiCreditsLink" href="https://platform.openai.com/settings/organization/billing/overview" target="_blank" rel="noopener noreferrer">Créditos ↗</a></div></div>
+<div class="panel" style="grid-column:1/-1" id="sendokaPanel">
+<div class="panel-head"><div><h2>✉ Sendoka · SMS e verificação</h2><p class="sub" style="margin:0">Plugin opcional de mensagens transacionais e códigos OTP.</p></div><span class="chip" id="sendokaState">Não configurado</span></div>
+<div class="control-row">
+<div><div class="field"><label for="sendokaKey">CHAVE API SENDOKA</label><input type="password" autocomplete="off" id="sendokaKey" placeholder="sok_test_... ou sok_live_..."><p class="hint">Chave salva localmente e protegida com DPAPI. Não aparece novamente aqui.</p></div>
+<div class="field"><label for="sendokaSender">REMETENTE REGISTRADO</label><input type="text" id="sendokaSender" placeholder="+5511999999999 ou identificador aprovado"></div>
+<div class="actions"><button type="button" class="secondary small" id="sendokaSave">Salvar configuração</button><button type="button" class="secondary small danger" id="sendokaRemoveKey">Remover chave</button><a class="helper-link" target="_blank" rel="noopener noreferrer" href="https://www.sendoka.com/docs/guides/api/sms">Documentação ↗</a></div></div>
+<div><div class="field"><label for="sendokaTo">TELEFONE DESTINATÁRIO (E.164)</label><input type="text" id="sendokaTo" placeholder="+5511999999999" autocomplete="off"></div>
+<div class="field"><label for="sendokaBody">MENSAGEM SMS (ATÉ 1600 CARACTERES)</label><textarea id="sendokaBody" rows="3" maxlength="1600" style="width:100%;border:1px solid #dde5ef;border-radius:11px;padding:13px;background:#fbfcff;font:inherit;resize:vertical" placeholder="Mensagem transacional para seu destinatário"></textarea></div>
+<div class="actions"><button type="button" class="primary small" id="sendokaSend">Enviar SMS</button><button type="button" class="secondary small" id="sendokaOtpStart">Solicitar código OTP</button></div>
+<div id="sendokaOtpFlow" hidden style="margin-top:16px"><div class="field"><label for="sendokaOtpCode">CÓDIGO RECEBIDO</label><input id="sendokaOtpCode" type="text" inputmode="numeric" maxlength="10" autocomplete="one-time-code" placeholder="000000"></div><button type="button" class="secondary small" id="sendokaOtpCheck">Validar código</button></div>
+<p class="hint" id="sendokaFeedback" role="status" style="margin:12px 0 0">Use uma chave de teste para simular envios sem entrega real. O modo ativo aparecerá acima.</p></div></div>
+</div>
 <div class="panel"><div class="panel-head"><h2>⚙ Preferências</h2></div>
 <div class="field"><label for="privacy">VISIBILIDADE PADRÃO NO YOUTUBE</label><select id="privacy"><option value="private">Privado (mais seguro)</option><option value="unlisted">Não listado</option><option value="public">Público</option></select></div>
 <div class="feature-card"><div class="feature-icon">🔒</div><div><strong>Segredos protegidos</strong><p>Tokens e chaves são criptografados com DPAPI do seu usuário Windows. O servidor escuta somente em 127.0.0.1.</p></div></div>
@@ -1044,8 +1066,17 @@ function displayAIState(){
    'Configure sua chave '+providerLabel[p]+' e depois busque modelos.';
  $('ai_api_key').placeholder=ready?'Chave salva •••••••• (digite apenas para substituir)':'Cole sua API Key de '+providerLabel[p];
 }
+function updateSendokaUI(s){
+ const ready=!!s.sendoka_api_key_ready,mode=s.sendoka_mode;
+ $('sendokaState').textContent=ready?(mode==='test'?'✓ Sandbox (simulado)':'✓ Produção (real)'):'Não configurado';
+ $('sendokaState').className='chip '+(ready?(mode==='test'?'warn':'good'):'');
+ $('sendokaSender').value=s.sendoka_sender||'';
+ $('sendokaKey').value='';
+ $('sendokaKey').placeholder=ready?'Chave protegida e salva ••••••••':'sok_test_... ou sok_live_...';
+}
 function fillSettings(s){
  settings=s;
+ updateSendokaUI(s);
  for(const f of ['yt_client_file','meta_page_id','privacy'])if(s[f]!==undefined)$(f).value=s[f];
  $('ai_provider').value=providers.includes(s.ai_provider)?s.ai_provider:'openai';
  $('ytState').textContent=s.youtube_oauth_ready?'✓ Conectado':'Não conectado';
@@ -1142,6 +1173,85 @@ async function saveSettings(){
  if(r.settings[keyReady[p]]&&!modelCache[p])await loadModels();
  return r;
 }
+let sendokaLastOtpId='';
+async function saveSendoka(clear=false){
+ const key=$('sendokaKey').value.trim();
+ if(key&&!/^sok_(test|live)_/.test(key))throw Error('Chave inválida: use sok_test_ ou sok_live_.');
+ const payload={sendoka_sender:$('sendokaSender').value.trim()};
+ if(key)payload.sendoka_api_key=key;
+ if(clear)payload.clear_sendoka_api_key=true;
+ const result=await api('/api/settings',{method:'POST',json:payload});
+ settings=result.settings;updateSendokaUI(settings);
+ sendokaLastOtpId='';$('sendokaOtpFlow').hidden=true;
+ $('sendokaFeedback').textContent=clear?'Credencial removida.':'Configuração salva e protegida com DPAPI.';
+}
+$('sendokaSave').onclick=async()=>{
+ $('sendokaSave').disabled=true;
+ try{await saveSendoka();toast('Sendoka configurado com segurança.')}
+ catch(e){$('sendokaFeedback').textContent=e.message;toast(e.message)}
+ finally{$('sendokaSave').disabled=false}
+};
+$('sendokaRemoveKey').onclick=async()=>{
+ if(!confirm('Remover a chave Sendoka salva neste computador?'))return;
+ $('sendokaRemoveKey').disabled=true;
+ try{await saveSendoka(true);toast('Chave Sendoka removida.')}
+ catch(e){toast(e.message)}
+ finally{$('sendokaRemoveKey').disabled=false}
+};
+function ensureSendoka(){
+ if($('sendokaKey').value.trim()||$('sendokaSender').value.trim()!==(settings.sendoka_sender||''))
+  throw Error('Salve a chave e o remetente antes de enviar.');
+ if(!settings.sendoka_api_key_ready||!settings.sendoka_sender)
+  throw Error('Configure a chave e o remetente Sendoka antes de enviar.');
+ const to=$('sendokaTo').value.trim();
+ if(!/^\+[1-9]\d{1,14}$/.test(to))throw Error('Destinatário deve estar em formato E.164, ex.: +5511999999999.');
+ return to;
+}
+$('sendokaSend').onclick=async()=>{
+ const button=$('sendokaSend');
+ try{
+  const to=ensureSendoka(),body=$('sendokaBody').value.trim();
+  if(!body||body.length>1600)throw Error('Digite uma mensagem entre 1 e 1600 caracteres.');
+  const mode=settings.sendoka_mode==='test'?'SIMULADO':'REAL (pode consumir cota ou gerar cobrança)';
+  if(!confirm('Enviar SMS para '+to+'?\n\nModo: '+mode+'\n\nConfirme que o destinatário consentiu.'))return;
+  button.disabled=true;
+  const result=await api('/api/sendoka/sms',{method:'POST',json:{to,body,confirm:'ENVIAR SMS'}});
+  $('sendokaFeedback').textContent=(result.mode==='test'?'SMS simulado':'SMS enviado ao provedor')+
+   ' · Status: '+result.status+' · ID: '+result.id+
+   (result.segments!=null?' · Segmentos: '+result.segments:'')+
+   (result.warnings?.length?' · Avisos: '+result.warnings.join(', '):'');
+  toast('Sendoka: requisição aceita.');
+ }catch(e){$('sendokaFeedback').textContent='Falha: '+e.message;toast(e.message)}
+ finally{button.disabled=false}
+};
+$('sendokaOtpStart').onclick=async()=>{
+ const button=$('sendokaOtpStart');
+ try{
+  const to=ensureSendoka(),mode=settings.sendoka_mode==='test'?'SIMULADO':'REAL (pode consumir cota ou gerar cobrança)';
+  if(!confirm('Solicitar código OTP para '+to+'?\n\nModo: '+mode+'\n\nConfirme o consentimento do destinatário.'))return;
+  button.disabled=true;
+  const result=await api('/api/sendoka/verify/start',{method:'POST',json:{to,confirm:'ENVIAR OTP'}});
+  sendokaLastOtpId=result.id;
+  $('sendokaOtpFlow').hidden=false;$('sendokaOtpCode').value='';
+  $('sendokaFeedback').textContent=(result.mode==='test'?'OTP simulado (código de teste: 000000)':'OTP solicitado')+
+   ' · Válido até '+result.expires_at+' · ID '+result.id;
+  toast('Solicitação OTP registrada.');
+ }catch(e){$('sendokaFeedback').textContent='Falha: '+e.message;toast(e.message)}
+ finally{button.disabled=false}
+};
+$('sendokaOtpCheck').onclick=async()=>{
+ const button=$('sendokaOtpCheck');
+ try{
+  if(!sendokaLastOtpId)throw Error('Solicite primeiro um código OTP.');
+  const code=$('sendokaOtpCode').value.trim();
+  if(!/^\d{4,10}$/.test(code))throw Error('Informe o código numérico recebido.');
+  button.disabled=true;
+  const result=await api('/api/sendoka/verify/check',{method:'POST',json:{id:sendokaLastOtpId,code}});
+  $('sendokaFeedback').textContent=result.approved?'✓ Código confirmado pelo Sendoka.':'Código não aprovado: '+(result.reason||result.status);
+  if(result.approved)sendokaLastOtpId='';
+ }catch(e){$('sendokaFeedback').textContent='Falha: '+e.message;toast(e.message)}
+ finally{button.disabled=false;$('sendokaOtpCode').value=''}
+};
 $('btnSave').onclick=async()=>{
  try{await saveSettings();toast('Credenciais e seleção de IA salvas com segurança.')}
  catch(e){toast(e.message)}
