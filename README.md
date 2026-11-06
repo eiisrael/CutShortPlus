@@ -1,6 +1,11 @@
 # CutShortPlus — Estúdio local de Shorts
 
-Aplicativo Windows para pesquisar vídeos, identificar trechos, gerar Shorts/Reels verticais e gerenciar publicações. A interface HTML/JavaScript funciona com um servidor Python local em 127.0.0.1:8765.
+## Estado da distribuição — 06/11/2026
+
+Este é o repositório **público** do estúdio local, disponibilizado nos limites da licença [CutShortPlus Source-Available 1.0](LICENSE). Não contém contas, bancos, senhas, chaves privadas, executáveis administrativos, dados de usuários ou infraestrutura de processamento de produção.
+
+Componentes privados de autenticação, administração, pagamentos e hospedagem são mantidos **separadamente** e não fazem parte desta distribuição. A instalação pública não equivale ao produto web integral publicado.
+
 
 ## Requisitos
 
@@ -34,21 +39,6 @@ A marca visual é compartilhada entre `Start-CSP.exe`, a favicon e a barra later
 - Biblioteca de cortes, lixeira, restauração e exclusão com confirmação.
 - Temas claro/escuro; seleção de modelos de IA com favoritos.
 - Provedores opcionais: OpenAI, Anthropic (Claude), xAI (Grok), Google Gemini, DeepSeek, Mistral, Groq Cloud, OpenRouter e NVIDIA.
-
-## Plugin Sendoka (SMS e OTP)
-
-Em **Integrações → Sendoka**, configure uma chave `sok_test_...` (sandbox) ou `sok_live_...` (produção) e um remetente aprovado na sua conta Sendoka.
-Salve a configuração. A chave é protegida por DPAPI no arquivo local `data/settings.json`, não é devolvida ao navegador e nunca deve ser incluída no Git.
-Use destinatários no padrão internacional E.164 (ex.: `+5511999999999`). Para o Brasil, valide na sua conta se o serviço suporta a rota/destino e o remetente desejado.
-
-- **Enviar SMS**: exige confirmação explícita, não realiza envio automático ou em massa e pode consumir segmentos/cota no modo produção.
-- **Solicitar código OTP**: cria uma verificação de 6 dígitos válida por 10 minutos; a validação ocorre na API Sendoka. Em sandbox, o código documentado é `000000` (sem entrega real).
-- **Ambiente**: a interface identifica se a chave é de teste ou produção. Não configure uma chave real sem planejar uso e custos.
-- **Segurança**: HTTP somente para API Sendoka em HTTPS; credencial não entra nos logs nem nas respostas da API local. A origem das requisições locais continua limitada a `127.0.0.1:8765`.
-- **Testes offline**: `python tools/test_sendoka_plugin.py` e `python tools/validate_sendoka_ui.py`; não enviam mensagens. A chave da conta e a autorização do remetente são necessárias para testar envios reais.
-- **Documentação oficial**: https://www.sendoka.com/docs/guides/api/sms e https://www.sendoka.com/docs/guides/api/verify
-
-O plugin é opcional e não altera a criação, edição ou publicação de vídeos.
 
 ## Segurança e dados locais
 
